@@ -5,9 +5,13 @@
 //  Import CSS.
 import './style.scss';
 import './editor.scss';
+import PostSelector from './components/PostSelector';
 
 const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
+const { Fragment, RawHTML } = wp.element;
+const { InspectorControls } = wp.editor;
+const { PanelBody } = wp.components;
 
 /**
  * Register Gutenberg Block.
@@ -15,33 +19,69 @@ const { registerBlockType } = wp.blocks;
  */
 registerBlockType( 'tyme/post-swiper', {
 	title: __( 'Tyme Post Swiper' ),
-	icon: 'shield',
+	icon: 'slides',
 	category: 'widgets',
 	keywords: [
 		__( 'Post Swiper' ),
 		__( 'Tyme' ),
 		__( 'Carousel' ),
 	],
+	attributes: {
+		posts: {
+			type: 'array',
+			default: [],
+		},
+	},
 
 	/**
 	 * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
 	 */
-	edit: function( props ) {
-		// Creates a <p class='wp-block-cgb-block-tyme-post-swiper'></p>.
+	edit( { attributes, setAttributes } ) {
 		return (
-			<div className={ props.className }>
-				<h1>Tyme Post Swiper | Backend</h1>
-			</div>
+			<Fragment>
+				<InspectorControls>
+					<PanelBody title="Tyme Post Swiper | Select Post">
+						<PostSelector
+							onPostSelect={ post=> {
+								attributes.posts.push( post );
+								setAttributes( { posts: [ ...attributes ] } );
+							} }
+							posts={ attributes.posts }
+							onChange={ newValue => {
+								setAttributes( { posts: [ ...newValue ] } );
+							} }
+							postType={ 'post' }
+							limit="3"
+							showSuggestions={ true }
+						/>
+					</PanelBody>
+				</InspectorControls>
+				<div>
+					{ attributes.posts.map( post => (
+						<div key={ post.id }>
+							#{ post.id }
+							<h2>{ post.title }</h2>
+							<RawHTML>{ post.excerpt }</RawHTML>
+						</div>
+					) ) }
+				</div>
+			</Fragment>
 		);
 	},
 
 	/**
 	 * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
 	 */
-	save: function( props ) {
+	save( { attributes } ) {
 		return (
 			<div>
-				<h1>Tyme Post Swiper | Frontend</h1>
+				{ attributes.posts.map( post => (
+					<div key={ post.id }>
+						#{ post.id }
+						<h2>{ post.title }</h2>
+						<RawHTML>{ post.excerpt }</RawHTML>
+					</div>
+				) ) }
 			</div>
 		);
 	},
