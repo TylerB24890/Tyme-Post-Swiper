@@ -8,7 +8,8 @@ import './editor.scss';
 
 // Import Components
 import PostSelector from './components/PostSelector';
-import { SwiperEffectSelect, SwiperPerView } from './components/SwiperSettings';
+import SwiperEffectSelect from './components/SwiperEffectSelect';
+import SwiperPerView from './components/SwiperPerView';
 
 const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
@@ -38,32 +39,36 @@ registerBlockType( 'tyme/post-swiper', {
 			default: false,
 			type: 'boolean',
 		},
-		swiperEffect: {
-			type: 'select',
-			default: 'slide',
-		},
-		swiperPerView: {
-			type: 'int',
-			default: 1,
+		swiperSettings: {
+			effect: {
+				type: 'string',
+				default: 'slide',
+			},
+			perview: {
+				type: 'number',
+				default: 1,
+			},
 		},
 	},
 
 	/**
 	 * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
 	 */
-	edit( { attributes, setAttributes } ) {
+	edit: ( props ) => {
+		const posts = props.attributes.posts;
+		const settings = props.attributes.swiperSettings;
 		return (
 			<Fragment>
 				<InspectorControls>
 					<PanelBody title={ __( 'Swiper Posts' ) }>
 						<PostSelector
-							onPostSelect={ post=> {
-								attributes.posts.push( post );
-								setAttributes( { posts: [ ...attributes.posts ] } );
+							onPostSelect={ post => {
+								posts.push( post );
+								props.setAttributes( { posts: [ ...posts ] } );
 							} }
-							posts={ attributes.posts }
+							posts={ posts }
 							onChange={ newValue => {
-								setAttributes( { posts: [ ...newValue ] } );
+								props.setAttributes( { posts: [ ...newValue ] } );
 							} }
 							postType={ 'post' }
 							limit="3"
@@ -73,17 +78,23 @@ registerBlockType( 'tyme/post-swiper', {
 
 					<PanelBody title={ __( 'Swiper Settings' ) }>
 						<SwiperEffectSelect />
-						<SwiperPerView />
+						<SwiperPerView
+							onChange={ newPerView => {
+								props.setAttributes( { swiperPerView: newPerView } );
+							} }
+						/>
 					</PanelBody>
 				</InspectorControls>
-				<div>
-					{ attributes.posts.map( post => (
-						<div key={ post.id }>
-							#{ post.id }
-							<h2>{ post.title }</h2>
-							<RawHTML>{ post.excerpt }</RawHTML>
-						</div>
-					) ) }
+				<div className="swiper-container">
+					<div className="swiper-wrapper">
+						{ props.attributes.posts.map( post => (
+							<div className="swiper-slide" key={ post.id }>
+								#{ post.id }
+								<h2>{ post.title }</h2>
+								<RawHTML>{ post.excerpt }</RawHTML>
+							</div>
+						) ) }
+					</div>
 				</div>
 			</Fragment>
 		);
@@ -92,16 +103,25 @@ registerBlockType( 'tyme/post-swiper', {
 	/**
 	 * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
 	 */
-	save( { attributes } ) {
+	save: ( props ) => {
 		return (
-			<div>
-				{ attributes.posts.map( post => (
-					<div key={ post.id }>
-						#{ post.id }
-						<h2>{ post.title }</h2>
-						<RawHTML>{ post.excerpt }</RawHTML>
+			<div className="swiper-container">
+				<div className="swiper-wrapper">
+					<h2>{ __( 'Settings' ) }</h2>
+					<div>
+						{ __( '# of Slides' ) + props.attributes.swiperPerView }
 					</div>
-				) ) }
+					<div>
+						{ __( 'Swiper Effect' ) + props.attributes.swiperEffect }
+					</div>
+					{ props.attributes.posts.map( post => (
+						<div className="swiper-slide" key={ post.id }>
+							#{ post.id }
+							<h2>{ post.title }</h2>
+							<RawHTML>{ post.excerpt }</RawHTML>
+						</div>
+					) ) }
+				</div>
 			</div>
 		);
 	},

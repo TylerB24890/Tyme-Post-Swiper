@@ -46,3 +46,18 @@ function tyme_post_swiper_editor_assets() { // phpcs:ignore
 	);
 }
 add_action( 'enqueue_block_editor_assets', 'tyme_post_swiper_editor_assets' );
+
+function tyme_post_swiper_meta() {
+	register_meta( 'post', 'swiperEffect', array(
+		'show_in_rest' => true,
+		'single' => true,
+		'type' => 'string'
+	) );
+
+	register_meta( 'post', 'swiperPerView', array(
+		'show_in_rest' => true,
+		'single' => true,
+		'type' => 'number'
+	) );
+}
+add_action( 'init', 'tyme_post_swiper_meta' );
