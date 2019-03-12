@@ -273,7 +273,6 @@ class PostSelector extends Component {
 		/* eslint-disable jsx-a11y/no-autofocus */
 		return (
 			<Fragment>
-				{ this.renderPosts() }
 				<div className="editor-url-input">
 					<input
 						autoFocus={ autoFocus }
@@ -331,6 +330,8 @@ class PostSelector extends Component {
 						</div>
 					</Popover>
 				) }
+
+				{ this.renderPosts() }
 			</Fragment>
 		);
 		/* eslint-enable jsx-a11y/no-autofocus */

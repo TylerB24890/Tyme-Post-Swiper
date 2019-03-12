@@ -5,7 +5,10 @@
 //  Import CSS.
 import './style.scss';
 import './editor.scss';
+
+// Import Components
 import PostSelector from './components/PostSelector';
+import { SwiperEffectSelect, SwiperPerView } from './components/SwiperSettings';
 
 const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
@@ -31,6 +34,18 @@ registerBlockType( 'tyme/post-swiper', {
 			type: 'array',
 			default: [],
 		},
+		showFeaturedImage: {
+			default: false,
+			type: 'boolean',
+		},
+		swiperEffect: {
+			type: 'select',
+			default: 'slide',
+		},
+		swiperPerView: {
+			type: 'int',
+			default: 1,
+		},
 	},
 
 	/**
@@ -40,7 +55,7 @@ registerBlockType( 'tyme/post-swiper', {
 		return (
 			<Fragment>
 				<InspectorControls>
-					<PanelBody title={ __( 'Tyme Post Swiper | Select Post' ) }>
+					<PanelBody title={ __( 'Swiper Posts' ) }>
 						<PostSelector
 							onPostSelect={ post=> {
 								attributes.posts.push( post );
@@ -54,6 +69,11 @@ registerBlockType( 'tyme/post-swiper', {
 							limit="3"
 							showSuggestions={ true }
 						/>
+					</PanelBody>
+
+					<PanelBody title={ __( 'Swiper Settings' ) }>
+						<SwiperEffectSelect />
+						<SwiperPerView />
 					</PanelBody>
 				</InspectorControls>
 				<div>
