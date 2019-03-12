@@ -7,21 +7,18 @@ class SwiperEffectSelect extends Component {
 		super( ...arguments );
 
 		this.state = {
-			effect: 'slide',
+			effect: this.props.value,
 		};
 	}
 
 	onChange( effect ) {
-		if ( effect !== this.state.effect ) {
-			this.setState( {
-				effect: effect,
-			} );
-		}
+		this.props.onChange( effect );
+		this.setState( {
+			effect: effect,
+		} );
 	}
 
 	render() {
-		const curEffect = this.state.effect;
-
 		const availableEffects = [
 			{
 				label: __( 'Slide' ),
@@ -48,7 +45,7 @@ class SwiperEffectSelect extends Component {
 		return (
 			<SelectControl
 				label={ __( 'Swipe Effect' ) }
-				value={ curEffect }
+				value={ this.state.effect }
 				options={ availableEffects }
 				onChange={ ( newEffect ) => {
 					this.onChange( newEffect );

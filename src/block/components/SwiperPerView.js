@@ -7,27 +7,24 @@ class SwiperPerView extends Component {
 		super( ...arguments );
 
 		this.state = {
-			perview: 1,
+			perview: this.props.value,
 		};
 	}
 
 	onChange( perview ) {
-		if ( perview !== this.state.perview ) {
-			this.setState( {
-				perview: perview,
-			} );
-		}
+		this.props.onChange( perview );
+		this.setState( {
+			perview: perview,
+		} );
 	}
 
 	render() {
-		const swipePerView = this.state.perview;
-
 		return (
 			<RangeControl
 				label={ __( 'Posts Per View' ) }
-				value={ swipePerView }
-				onChange={ ( newPerView ) => {
-					this.onChange( newPerView );
+				value={ this.state.perview }
+				onChange={ ( newValue ) => {
+					this.onChange( newValue );
 				} }
 				min={ 1 }
 				max={ 5 }

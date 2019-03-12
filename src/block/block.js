@@ -1,3 +1,4 @@
+/* eslint-disable valid-jsdoc */
 /**
  * Tyme Post Swiper Block
  */
@@ -6,11 +7,12 @@
 import './style.scss';
 import './editor.scss';
 
-// Import Components
+// Custom Components
 import PostSelector from './components/PostSelector';
 import SwiperEffectSelect from './components/SwiperEffectSelect';
 import SwiperPerView from './components/SwiperPerView';
 
+// WP Components
 const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
 const { Fragment, RawHTML } = wp.element;
@@ -18,7 +20,8 @@ const { InspectorControls } = wp.editor;
 const { PanelBody } = wp.components;
 
 /**
- * Register Gutenberg Block.
+ * Register Gutenberg Block
+ *
  * @link https://wordpress.org/gutenberg/handbook/block-api/
  */
 registerBlockType( 'tyme/post-swiper', {
@@ -39,24 +42,25 @@ registerBlockType( 'tyme/post-swiper', {
 			default: false,
 			type: 'boolean',
 		},
-		swiperSettings: {
-			effect: {
-				type: 'string',
-				default: 'slide',
-			},
-			perview: {
-				type: 'number',
-				default: 1,
-			},
+		swiperEffect: {
+			type: 'string',
+			default: 'slide',
+		},
+		swiperPerView: {
+			type: 'number',
+			default: 1,
 		},
 	},
 
 	/**
+	 * The Gutenberg Edit Function
+	 * Renders the Block Editor in wp-admin
+	 *
 	 * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
 	 */
 	edit: ( props ) => {
-		const posts = props.attributes.posts;
-		const settings = props.attributes.swiperSettings;
+		const { posts, swiperEffect, swiperPerView } = props.attributes;
+
 		return (
 			<Fragment>
 				<InspectorControls>
@@ -77,11 +81,17 @@ registerBlockType( 'tyme/post-swiper', {
 					</PanelBody>
 
 					<PanelBody title={ __( 'Swiper Settings' ) }>
-						<SwiperEffectSelect />
+						<SwiperEffectSelect
+							onChange={ ( newEffect ) => {
+								props.setAttributes( { swiperEffect: newEffect } );
+							} }
+							value={ swiperEffect }
+						/>
 						<SwiperPerView
 							onChange={ newPerView => {
 								props.setAttributes( { swiperPerView: newPerView } );
 							} }
+							value={ swiperPerView }
 						/>
 					</PanelBody>
 				</InspectorControls>
@@ -101,6 +111,9 @@ registerBlockType( 'tyme/post-swiper', {
 	},
 
 	/**
+	 * The Gutenberg Save Function
+	 * Tells WP how to save the rendered block markup to the database.
+	 *
 	 * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
 	 */
 	save: ( props ) => {

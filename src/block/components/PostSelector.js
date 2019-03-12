@@ -1,3 +1,8 @@
+/**
+ * The Post Selector component
+ */
+
+// WP Components
 const { Component, Fragment } = wp.element;
 const { decodeEntities } = wp.htmlEntities;
 const { UP, DOWN, ENTER } = wp.keycodes;
@@ -6,8 +11,10 @@ const { withInstanceId } = wp.compose;
 const { apiFetch } = wp;
 const { addQueryArgs } = wp.url;
 
+// Stop script from executing
 const stopEventPropagation = event => event.stopPropagation();
 
+// Wait to execute function
 function debounce( func, wait = 100 ) {
 	let timeout;
 	return function( ...args ) {
@@ -37,6 +44,7 @@ class PostSelector extends Component {
 		};
 	}
 
+	// Remove Suggestions
 	componentWillUnmount() {
 		delete this.suggestionsRequest;
 	}
@@ -51,6 +59,7 @@ class PostSelector extends Component {
 		};
 	}
 
+	// Update Suggestions List
 	updateSuggestions( value ) {
 		if ( value.length < 2 || /^https?:/.test( value ) ) {
 			this.setState( {
@@ -105,6 +114,7 @@ class PostSelector extends Component {
 		this.updateSuggestions( inputValue );
 	}
 
+	// Listen for key events (up, down, enter)
 	onKeyDown( event ) {
 		const { showSuggestions, selectedSuggestion, posts, loading } = this.state;
 
@@ -146,6 +156,7 @@ class PostSelector extends Component {
 		}
 	}
 
+	// Retreive the post data upon selection
 	selectPost( post ) {
 		if ( this.props.data ) {
 			let reachOutToApi = false;
@@ -188,6 +199,7 @@ class PostSelector extends Component {
 		} );
 	}
 
+	// Suggested posts markup
 	renderPosts() {
 		return (
 			<ul>
@@ -260,6 +272,7 @@ class PostSelector extends Component {
 		);
 	}
 
+	// Display the input + suggested posts
 	render() {
 		const { autoFocus = true, instanceId, limit } = this.props;
 		const {
