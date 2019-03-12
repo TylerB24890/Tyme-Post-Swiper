@@ -9,8 +9,8 @@
  *
  * CSS for both Frontend+Backend.
  */
-.wp-block-tyme-post-swiper h1 {
-  font-size: 32px; }
+.wp-block-tyme-post-swiper .swiper-slide {
+  background-color: inherit; }
 
 /**
  *	Swiper Styles

@@ -22,12 +22,14 @@ function tyme_post_swiper_assets() { // phpcs:ignore
 		plugins_url( 'dist/vendor/swiper.min.js', dirname( __FILE__ ) ),
 		array()
 	);
+
 	wp_enqueue_script(
 		'tyme_post_swiper-fe-script',
 		plugins_url( 'dist/tyme-swiper-fe.js', dirname( __FILE__ ) ),
 		array( 'tyme_post_swiper-swiper-script', 'jquery' ),
 		true
 	);
+
 	// Styles.
 	wp_enqueue_style(
 		'tyme_post_swiper-css',
@@ -57,18 +59,3 @@ function tyme_post_swiper_editor_assets() { // phpcs:ignore
 	);
 }
 add_action( 'enqueue_block_editor_assets', 'tyme_post_swiper_editor_assets' );
-
-function tyme_post_swiper_meta() {
-	register_meta( 'post', 'swiperEffect', array(
-		'show_in_rest' => true,
-		'single' => true,
-		'type' => 'string'
-	) );
-
-	register_meta( 'post', 'swiperPerView', array(
-		'show_in_rest' => true,
-		'single' => true,
-		'type' => 'number'
-	) );
-}
-add_action( 'init', 'tyme_post_swiper_meta' );

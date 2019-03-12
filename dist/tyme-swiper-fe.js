@@ -2,8 +2,17 @@
 	'use strict';
 
 	$( document ).ready( function() {
-		new Swiper( '.swiper-container', {
-			loop: true,
+		const swiperContainer = $( '.swiper-container' );
+
+		new Swiper( swiperContainer, {
+			autoplay: swiperContainer.data( 'swiper-autoplay' ),
+			loop: swiperContainer.data( 'swiper-loop' ),
+			slidesPerView: swiperContainer.data( 'swiper-perview' ),
+			effect: swiperContainer.data( 'swiper-effect' ),
+			fadeEffect: {
+				crossFade: true,
+			},
+			grabCursor: true,
 		} );
 	} );
 }( jQuery ) );

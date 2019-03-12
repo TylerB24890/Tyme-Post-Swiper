@@ -10,6 +10,7 @@ const { Spinner, Popover, IconButton } = wp.components;
 const { withInstanceId } = wp.compose;
 const { apiFetch } = wp;
 const { addQueryArgs } = wp.url;
+const { __ } = wp.i18n;
 
 // Stop script from executing
 const stopEventPropagation = event => event.stopPropagation();
@@ -25,7 +26,7 @@ function debounce( func, wait = 100 ) {
 	};
 }
 
-class PostSelector extends Component {
+class SwiperPostSelector extends Component {
 	constructor() {
 		super( ...arguments );
 		this.onChange = this.onChange.bind( this );
@@ -274,7 +275,7 @@ class PostSelector extends Component {
 
 	// Display the input + suggested posts
 	render() {
-		const { autoFocus = true, instanceId, limit } = this.props;
+		const { autoFocus = true, instanceId } = this.props;
 		const {
 			showSuggestions,
 			posts,
@@ -282,7 +283,7 @@ class PostSelector extends Component {
 			loading,
 			input,
 		} = this.state;
-		const inputDisabled = !! limit && this.props.posts.length >= limit;
+
 		/* eslint-disable jsx-a11y/no-autofocus */
 		return (
 			<Fragment>
@@ -295,11 +296,7 @@ class PostSelector extends Component {
 						value={ input }
 						onChange={ this.onChange }
 						onInput={ stopEventPropagation }
-						placeholder={
-							inputDisabled ?
-								`Limted to ${ limit } posts` :
-								'Type page or post name'
-						}
+						placeholder={ __( 'Type page or post name' ) }
 						onKeyDown={ this.onKeyDown }
 						role="combobox"
 						aria-expanded={ showSuggestions }
@@ -311,7 +308,6 @@ class PostSelector extends Component {
 								undefined
 						}
 						style={ { width: '100%' } }
-						disabled={ inputDisabled }
 					/>
 
 					{ loading && <Spinner /> }
@@ -351,4 +347,4 @@ class PostSelector extends Component {
 	}
 }
 
-export default withInstanceId( PostSelector );
+export default withInstanceId( SwiperPostSelector );
