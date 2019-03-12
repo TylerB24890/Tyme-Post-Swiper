@@ -34,7 +34,7 @@ function tyme_post_swiper_editor_assets() { // phpcs:ignore
 	wp_enqueue_script(
 		'tyme_post_swiper-js',
 		plugins_url( '/dist/blocks.build.js', dirname( __FILE__ ) ),
-		array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor', 'wp-html-entities', 'wp-components', 'wp-compose', 'wp-url' ),
+		array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor', 'wp-html-entities', 'wp-keycodes', 'wp-components', 'wp-compose', 'wp-url' ),
 		true
 	);
 

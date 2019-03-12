@@ -40,11 +40,11 @@ registerBlockType( 'tyme/post-swiper', {
 		return (
 			<Fragment>
 				<InspectorControls>
-					<PanelBody title="Tyme Post Swiper | Select Post">
+					<PanelBody title={ __( 'Tyme Post Swiper | Select Post' ) }>
 						<PostSelector
 							onPostSelect={ post=> {
 								attributes.posts.push( post );
-								setAttributes( { posts: [ ...attributes ] } );
+								setAttributes( { posts: [ ...attributes.posts ] } );
 							} }
 							posts={ attributes.posts }
 							onChange={ newValue => {

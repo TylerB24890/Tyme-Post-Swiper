@@ -1,5 +1,6 @@
 const { Component, Fragment } = wp.element;
 const { decodeEntities } = wp.htmlEntities;
+const { UP, DOWN, ENTER } = wp.keycodes;
 const { Spinner, Popover, IconButton } = wp.components;
 const { withInstanceId } = wp.compose;
 const { apiFetch } = wp;
@@ -9,7 +10,6 @@ const stopEventPropagation = event => event.stopPropagation();
 
 function debounce( func, wait = 100 ) {
 	let timeout;
-
 	return function( ...args ) {
 		clearTimeout( timeout );
 		timeout = setTimeout( () => {
@@ -21,8 +21,8 @@ function debounce( func, wait = 100 ) {
 class PostSelector extends Component {
 	constructor() {
 		super( ...arguments );
-
 		this.onChange = this.onChange.bind( this );
+		this.onKeyDown = this.onKeyDown.bind( this );
 		this.bindListNode = this.bindListNode.bind( this );
 		this.updateSuggestions = debounce( this.updateSuggestions.bind( this ), 200 );
 		this.limit = this.props.limit ? parseInt( this.props.limit ) : false;
@@ -37,8 +37,8 @@ class PostSelector extends Component {
 		};
 	}
 
-	componentDidUpdate() {
-		// Nothing
+	componentWillUnmount() {
+		delete this.suggestionsRequest;
 	}
 
 	bindListNode( ref ) {
@@ -77,48 +77,84 @@ class PostSelector extends Component {
 			} ),
 		} );
 
-		request.then( posts => {
-			if ( this.suggestionRequest !== request ) {
-				return;
-			}
+		request
+			.then( posts => {
+				if ( this.suggestionsRequest !== request ) {
+					return;
+				}
 
-			this.setState( {
-				posts,
-				loading: false,
-			} );
-		} ).catch( () => {
-			if ( this.suggestionsRequest === request ) {
 				this.setState( {
+					posts,
 					loading: false,
 				} );
-			}
-		} );
+			} )
+			.catch( () => {
+				if ( this.suggestionsRequest === request ) {
+					this.setState( {
+						loading: false,
+					} );
+				}
+			} );
 
 		this.suggestionsRequest = request;
 	}
 
 	onChange( event ) {
 		const inputValue = event.target.value;
-
-		this.setState( {
-			input: inputValue,
-		} );
-
+		this.setState( { input: inputValue } );
 		this.updateSuggestions( inputValue );
 	}
 
-	selectLink( post ) {
+	onKeyDown( event ) {
+		const { showSuggestions, selectedSuggestion, posts, loading } = this.state;
+
+		if ( ! showSuggestions || ! posts.length || loading ) {
+			return;
+		}
+
+		switch ( event.keyCode ) {
+			case UP: {
+				event.stopPropagation();
+				event.preventDefault();
+				const previousIndex = ! selectedSuggestion ?
+					posts.length - 1 :
+					selectedSuggestion - 1;
+				this.setState( {
+					selectedSuggestion: previousIndex,
+				} );
+				break;
+			}
+			case DOWN: {
+				event.stopPropagation();
+				event.preventDefault();
+				const nextIndex =
+					selectedSuggestion === null || selectedSuggestion === posts.length - 1 ?
+						0 :
+						selectedSuggestion + 1;
+				this.setState( {
+					selectedSuggestion: nextIndex,
+				} );
+				break;
+			}
+			case ENTER: {
+				if ( this.state.selectedSuggestion !== null ) {
+					event.stopPropagation();
+					const post = this.state.posts[ this.state.selectedSuggestion ];
+					this.selectPost( post );
+				}
+			}
+		}
+	}
+
+	selectPost( post ) {
 		if ( this.props.data ) {
 			let reachOutToApi = false;
-
 			const returnData = {};
-
 			for ( const prop of this.props.data ) {
 				if ( ! post.hasOwnProperty( prop ) ) {
 					reachOutToApi = true;
 					return;
 				}
-
 				returnData[ prop ] = post[ prop ];
 			}
 
@@ -129,63 +165,80 @@ class PostSelector extends Component {
 					selectedSuggestion: null,
 					showSuggestions: false,
 				} );
-
 				return;
 			}
-
-			apiFetch( {
-				path: '/wp/v2/${post.subtype}s/${post.id}',
-			} ).then( response => {
-				const fullpost = {
-					title: decodeEntities( response.title.rendered ),
-					id: response.id,
-					excerpt: decodeEntities( response.excerpt.rendered ),
-					url: response.link,
-					date: response.human_date,
-				};
-
-				this.props.onPostSelect( fullpost );
-			} );
-
-			this.setState( {
-				input: '',
-				selectedSuggestion: null,
-				showSuggestions: false,
-			} );
 		}
+		apiFetch( {
+			path: `/wp/v2/${ post.subtype }s/${ post.id }`,
+		} ).then( response => {
+			const fullpost = {
+				title: decodeEntities( response.title.rendered ),
+				id: response.id,
+				excerpt: decodeEntities( response.excerpt.rendered ),
+				url: response.link,
+				date: response.human_date,
+			};
+			this.props.onPostSelect( fullpost );
+		} );
+
+		this.setState( {
+			input: '',
+			selectedSuggestion: null,
+			showSuggestions: false,
+		} );
 	}
 
-	renderSelectedPosts() {
+	renderPosts() {
 		return (
 			<ul>
 				{ this.props.posts.map( ( post, i ) => (
-					<li style={ { display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'nowrap' } } key={ post.id }>
+					<li
+						style={ {
+							display: 'flex',
+							justifyContent: 'space-between',
+							alignItems: 'baseline',
+							flexWrap: 'nowrap',
+						} }
+						key={ post.id }
+					>
 						<span style={ { maxWidth: '60%' } }>{ post.title }</span>
 						<span>
 							{ i !== 0 ? (
 								<IconButton
-									style={ { display: 'inline-flex', padding: '8px 2px', textAlign: center } }
+									style={ {
+										display: 'inline-flex',
+										padding: '8px 2px',
+										textAlign: 'center',
+									} }
 									icon="arrow-up-alt2"
 									onClick={ () => {
-										this.props.posts.splice( i - 1, 0, this.props.posts.splice( i, 1 )[ 0 ] );
+										this.props.posts.splice(
+											i - 1,
+											0,
+											this.props.posts.splice( i, 1 )[ 0 ]
+										);
 										this.props.onChange( this.props.posts );
-										this.setState( {
-											state: this.state,
-										} );
+										this.setState( { state: this.state } );
 									} }
 								/>
 							) : null }
 
 							{ i !== this.props.posts.length - 1 ? (
 								<IconButton
-									style={ { display: 'inline-flex', padding: '8px 2px', textAlign: 'center' } }
+									style={ {
+										display: 'inline-flex',
+										padding: '8px 2px',
+										textAlign: 'center',
+									} }
 									icon="arrow-down-alt2"
 									onClick={ () => {
-										this.props.posts.splice( i + 1, 0, this.props.posts.splice( i, 1 )[ 0 ] );
+										this.props.posts.splice(
+											i + 1,
+											0,
+											this.props.posts.splice( i, 1 )[ 0 ]
+										);
 										this.props.onChange( this.props.posts );
-										this.setState( {
-											state: this.state,
-										} );
+										this.setState( { state: this.state } );
 									} }
 								/>
 							) : null }
@@ -196,10 +249,8 @@ class PostSelector extends Component {
 								onClick={ () => {
 									this.props.posts.splice( i, 1 );
 									this.props.onChange( this.props.posts );
-									// force a re-render.
-									this.setState( {
-										state: this.state,
-									} );
+
+									this.setState( { state: this.state } );
 								} }
 							/>
 						</span>
@@ -210,26 +261,43 @@ class PostSelector extends Component {
 	}
 
 	render() {
-		const { instanceId, limit } = this.props;
-		const { showSuggestions, posts, selectedSuggestion, loading, input } = this.state;
+		const { autoFocus = true, instanceId, limit } = this.props;
+		const {
+			showSuggestions,
+			posts,
+			selectedSuggestion,
+			loading,
+			input,
+		} = this.state;
 		const inputDisabled = !! limit && this.props.posts.length >= limit;
-
+		/* eslint-disable jsx-a11y/no-autofocus */
 		return (
 			<Fragment>
-				{ this.renderSelectedPosts() }
+				{ this.renderPosts() }
 				<div className="editor-url-input">
 					<input
+						autoFocus={ autoFocus }
 						type="text"
 						aria-label={ 'URL' }
 						required
 						value={ input }
 						onChange={ this.onChange }
 						onInput={ stopEventPropagation }
-						placeholder={ inputDisabled ? 'Limited to ${limit} posts' : 'Type page or post name' }
+						placeholder={
+							inputDisabled ?
+								`Limted to ${ limit } posts` :
+								'Type page or post name'
+						}
+						onKeyDown={ this.onKeyDown }
 						role="combobox"
 						aria-expanded={ showSuggestions }
-						aria-owns={ 'editor-url-input-suggestions-${instanceId}' }
-						aria-activedescendant={ selectedSuggestion !== null ? 'editor-url-input-suggestions-${instanceId}-${selectedSuggestion}' : undefined }
+						aria-autocomplete="list"
+						aria-owns={ `editor-url-input-suggestions-${ instanceId }` }
+						aria-activedescendant={
+							selectedSuggestion !== null ?
+								`editor-url-input-suggestion-${ instanceId }-${ selectedSuggestion }` :
+								undefined
+						}
 						style={ { width: '100%' } }
 						disabled={ inputDisabled }
 					/>
@@ -237,14 +305,10 @@ class PostSelector extends Component {
 					{ loading && <Spinner /> }
 				</div>
 				{ showSuggestions && !! posts.length && (
-					<Popover
-						position="bottom"
-						noArrow
-						focusOnMount={ false }
-					>
+					<Popover position="bottom" noArrow focusOnMount={ false }>
 						<div
 							className="editor-url-input__suggestions"
-							id={ 'editor-url-input-suggestions-${instanceId}' }
+							id={ `editor-url-input-suggestions-${ instanceId }` }
 							ref={ this.bindListNode }
 							role="listbox"
 						>
@@ -253,12 +317,12 @@ class PostSelector extends Component {
 									key={ post.id }
 									role="option"
 									tabIndex="-1"
-									id={ 'editor-url-input-suggestion-${instanceId}' }
+									id={ `editor-url-input-suggestion-${ instanceId }-${ index }` }
 									ref={ this.bindSuggestionNode( index ) }
-									className={ 'editor-url-input__suggestion' }
-									onClick={ () => {
-										this.selectLink( post );
-									} }
+									className={ `editor-url-input__suggestion ${
+										index === selectedSuggestion ? 'is-selected' : ''
+									}` }
+									onClick={ () => this.selectPost( post ) }
 									aria-selected={ index === selectedSuggestion }
 								>
 									{ decodeEntities( post.title ) || '(no title)' }
@@ -269,6 +333,7 @@ class PostSelector extends Component {
 				) }
 			</Fragment>
 		);
+		/* eslint-enable jsx-a11y/no-autofocus */
 	}
 }
 
