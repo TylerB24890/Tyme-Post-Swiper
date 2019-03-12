@@ -32,4 +32,4 @@ class SwiperLoopToggle extends Component {
 	}
 }
 
-export default SwiperLoopToggle;
+export { SwiperLoopToggle };

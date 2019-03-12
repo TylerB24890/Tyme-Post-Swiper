@@ -32,4 +32,4 @@ class SwiperCenterToggle extends Component {
 	}
 }
 
-export default SwiperCenterToggle;
+export { SwiperCenterToggle };

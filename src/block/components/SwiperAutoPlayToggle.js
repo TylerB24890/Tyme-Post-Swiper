@@ -32,4 +32,4 @@ class SwiperAutoPlayToggle extends Component {
 	}
 }
 
-export default SwiperAutoPlayToggle;
+export { SwiperAutoPlayToggle };

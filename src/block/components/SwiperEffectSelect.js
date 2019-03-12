@@ -55,4 +55,4 @@ class SwiperEffectSelect extends Component {
 	}
 }
 
-export default SwiperEffectSelect;
+export { SwiperEffectSelect };

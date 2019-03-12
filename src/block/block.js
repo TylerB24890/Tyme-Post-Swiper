@@ -9,11 +9,13 @@ import './editor.scss';
 
 // Custom Components
 import SwiperPostSelector from './components/SwiperPostSelector';
-import SwiperEffectSelect from './components/SwiperEffectSelect';
-import SwiperPerView from './components/SwiperPerView';
-import SwiperLoopToggle from './components/SwiperLoopToggle';
-import SwiperAutoPlayToggle from './components/SwiperAutoPlayToggle';
-import SwiperCenterToggle from './components/SwiperCenterToggle';
+import {
+	SwiperEffectSelect,
+	SwiperPerView,
+	SwiperLoopToggle,
+	SwiperAutoPlayToggle,
+	SwiperCenterToggle,
+} from './components';
 
 // WP Components
 const { __ } = wp.i18n;

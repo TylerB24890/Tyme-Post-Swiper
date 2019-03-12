@@ -33,4 +33,4 @@ class SwiperPerView extends Component {
 	}
 }
 
-export default SwiperPerView;
+export { SwiperPerView };
