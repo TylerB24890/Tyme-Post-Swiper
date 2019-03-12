@@ -120,16 +120,9 @@ registerBlockType( 'tyme/post-swiper', {
 		return (
 			<div className="swiper-container">
 				<div className="swiper-wrapper">
-					<h2>{ __( 'Settings' ) }</h2>
-					<div>
-						{ __( '# of Slides' ) + props.attributes.swiperPerView }
-					</div>
-					<div>
-						{ __( 'Swiper Effect' ) + props.attributes.swiperEffect }
-					</div>
 					{ props.attributes.posts.map( post => (
 						<div className="swiper-slide" key={ post.id }>
-							#{ post.id }
+								#{ post.id }
 							<h2>{ post.title }</h2>
 							<RawHTML>{ post.excerpt }</RawHTML>
 						</div>

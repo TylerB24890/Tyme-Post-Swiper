@@ -17,6 +17,17 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Enqueue Gutenberg block assets for both frontend + backend.
  */
 function tyme_post_swiper_assets() { // phpcs:ignore
+	wp_enqueue_script(
+		'tyme_post_swiper-swiper-script',
+		plugins_url( 'dist/vendor/swiper.min.js', dirname( __FILE__ ) ),
+		array()
+	);
+	wp_enqueue_script(
+		'tyme_post_swiper-fe-script',
+		plugins_url( 'dist/tyme-swiper-fe.js', dirname( __FILE__ ) ),
+		array( 'tyme_post_swiper-swiper-script', 'jquery' ),
+		true
+	);
 	// Styles.
 	wp_enqueue_style(
 		'tyme_post_swiper-css',
