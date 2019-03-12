@@ -13,6 +13,7 @@ import SwiperEffectSelect from './components/SwiperEffectSelect';
 import SwiperPerView from './components/SwiperPerView';
 import SwiperLoopToggle from './components/SwiperLoopToggle';
 import SwiperAutoPlayToggle from './components/SwiperAutoPlayToggle';
+import SwiperCenterToggle from './components/SwiperCenterToggle';
 
 // WP Components
 const { __ } = wp.i18n;
@@ -60,6 +61,10 @@ registerBlockType( 'tyme/post-swiper', {
 			type: 'boolean',
 			default: false,
 		},
+		swiperCentered: {
+			type: 'boolean',
+			default: true,
+		},
 	},
 
 	/**
@@ -69,7 +74,7 @@ registerBlockType( 'tyme/post-swiper', {
 	 * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
 	 */
 	edit: ( props ) => {
-		const { posts, swiperEffect, swiperPerView, swiperLoop, swiperAutoPlay } = props.attributes;
+		const { posts, swiperEffect, swiperPerView, swiperLoop, swiperAutoPlay, swiperCentered } = props.attributes;
 
 		return (
 			<Fragment>
@@ -108,6 +113,12 @@ registerBlockType( 'tyme/post-swiper', {
 							} }
 							value={ swiperLoop }
 						/>
+						<SwiperCenterToggle
+							onChange={ ( centerVal ) => {
+								props.setAttributes( { swiperCentered: centerVal } );
+							} }
+							value={ swiperCentered }
+						/>
 						<SwiperAutoPlayToggle
 							onChange={ ( autoPlayVal ) => {
 								props.setAttributes( { swiperAutoPlay: autoPlayVal } );
@@ -116,11 +127,17 @@ registerBlockType( 'tyme/post-swiper', {
 						/>
 					</PanelBody>
 				</InspectorControls>
-				<div className="swiper-container">
+				<div
+					className="swiper-container"
+					data-swiper-effect={ swiperEffect }
+					data-swiper-perview={ swiperPerView }
+					data-swiper-loop={ swiperLoop }
+					data-swiper-autoplay={ swiperAutoPlay }
+					data-swiper-centered={ swiperCentered }
+				>
 					<div className="swiper-wrapper">
 						{ props.attributes.posts.map( post => (
 							<div className="swiper-slide" key={ post.id }>
-								#{ post.id }
 								<h2>{ post.title }</h2>
 								<RawHTML>{ post.excerpt }</RawHTML>
 							</div>
@@ -138,10 +155,17 @@ registerBlockType( 'tyme/post-swiper', {
 	 * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
 	 */
 	save: ( props ) => {
-		const { swiperEffect, swiperPerView, swiperLoop, swiperAutoPlay } = props.attributes;
+		const { swiperEffect, swiperPerView, swiperLoop, swiperAutoPlay, swiperCentered } = props.attributes;
 
 		return (
-			<div className="swiper-container" data-swiper-effect={ swiperEffect } data-swiper-perview={ swiperPerView } data-swiper-loop={ swiperLoop } data-swiper-autoplay={ swiperAutoPlay }>
+			<div
+				className="swiper-container"
+				data-swiper-effect={ swiperEffect }
+				data-swiper-perview={ swiperPerView }
+				data-swiper-loop={ swiperLoop }
+				data-swiper-autoplay={ swiperAutoPlay }
+				data-swiper-centered={ swiperCentered }
+			>
 				<div className="swiper-wrapper">
 					{ props.attributes.posts.map( post => (
 						<div className="swiper-slide" key={ post.id }>

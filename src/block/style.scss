@@ -4,7 +4,10 @@
  * CSS for both Frontend+Backend.
  */
 
-.wp-block-tyme-post-swiper  {
+.swiper-container  {
+	&[data-swiper-centered="true"] {
+		text-align: center;
+	}
 	.swiper-slide {
 		background-color: inherit;
 	}
