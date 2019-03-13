@@ -1,5 +1,13 @@
 /**
- * The Post Selector component
+ * Swiper Settings
+ * Autosuggest input form for picking posts to cycle through
+ *
+ * Provides an input field for users to search for posts and select them
+ * to cycle through the Post Swiper carousel.
+ *
+ * @type 		{Object}
+ * @author	Tyler Bailey <tylerb.media@gmail.com>
+ * @package tyme-post-swiper
  */
 
 // WP Components

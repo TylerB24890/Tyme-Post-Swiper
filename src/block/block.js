@@ -1,6 +1,9 @@
 /* eslint-disable valid-jsdoc */
 /**
  * Tyme Post Swiper Block
+ *
+ * @author	Tyler Bailey <tylerb.media@gmail.com>
+ * @package tyme-post-swiper
  */
 
 //  Import CSS.
@@ -83,13 +86,13 @@ registerBlockType( 'tyme/post-swiper', {
 				<InspectorControls>
 					<PanelBody title={ __( 'Swiper Posts' ) }>
 						<SwiperPostSelector
-							onPostSelect={ post => {
+							onPostSelect={ ( post ) => {
 								posts.push( post );
 								props.setAttributes( { posts: [ ...posts ] } );
 							} }
 							posts={ posts }
-							onChange={ newValue => {
-								props.setAttributes( { posts: [ ...newValue ] } );
+							onChange={ ( newPost ) => {
+								props.setAttributes( { posts: [ ...newPost ] } );
 							} }
 							postType={ 'post' }
 							showSuggestions={ true }
@@ -104,7 +107,7 @@ registerBlockType( 'tyme/post-swiper', {
 							value={ swiperEffect }
 						/>
 						<SwiperPerView
-							onChange={ newPerView => {
+							onChange={ ( newPerView ) => {
 								props.setAttributes( { swiperPerView: newPerView } );
 							} }
 							value={ swiperPerView }
@@ -138,7 +141,7 @@ registerBlockType( 'tyme/post-swiper', {
 					data-swiper-centered={ swiperCentered }
 				>
 					<div className="swiper-wrapper">
-						{ props.attributes.posts.map( post => (
+						{ posts.map( post => (
 							<div className="swiper-slide" key={ post.id }>
 								<h2>{ post.title }</h2>
 								<RawHTML>{ post.excerpt }</RawHTML>
@@ -157,7 +160,7 @@ registerBlockType( 'tyme/post-swiper', {
 	 * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
 	 */
 	save: ( props ) => {
-		const { swiperEffect, swiperPerView, swiperLoop, swiperAutoPlay, swiperCentered } = props.attributes;
+		const { swiperEffect, swiperPerView, swiperLoop, swiperAutoPlay, swiperCentered, posts } = props.attributes;
 
 		return (
 			<div
@@ -169,7 +172,7 @@ registerBlockType( 'tyme/post-swiper', {
 				data-swiper-centered={ swiperCentered }
 			>
 				<div className="swiper-wrapper">
-					{ props.attributes.posts.map( post => (
+					{ posts.map( post => (
 						<div className="swiper-slide" key={ post.id }>
 							<h2>{ post.title }</h2>
 							<RawHTML>{ post.excerpt }</RawHTML>

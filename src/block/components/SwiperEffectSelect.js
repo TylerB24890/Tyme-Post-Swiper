@@ -1,3 +1,14 @@
+/**
+ * Swiper Settings
+ * Controls carousel cycle effect
+ *
+ * Provides a dropdown of the available effects built into Tyme Swiper
+ *
+ * @type 		{Object}
+ * @author	Tyler Bailey <tylerb.media@gmail.com>
+ * @package tyme-post-swiper
+ */
+
 const { Component } = wp.element;
 const { SelectControl } = wp.components;
 const { __ } = wp.i18n;

@@ -12,9 +12,19 @@
  * @package tyme-post-swiper
  */
 
+namespace Tyme\PostSwiper\Core;
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-require_once plugin_dir_path( __FILE__ ) . 'src/init.php';
+define( 'TYME_DIR', plugin_dir_path( __FILE__ ) );
+define( 'TYME_URL', plugin_dir_url( __FILE__ ) );
+
+function run() {
+	require_once TYME_DIR . 'src/classes/class-postswiper.php';
+	new PostSwiper();
+}
+
+\Tyme\PostSwiper\Core\run();
