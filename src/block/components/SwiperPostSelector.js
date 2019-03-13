@@ -168,17 +168,17 @@ class SwiperPostSelector extends Component {
 	// Retreive the post data upon selection
 	selectPost( post ) {
 		if ( this.props.data ) {
-			let reachOutToApi = false;
+			let doRequest = false;
 			const returnData = {};
 			for ( const prop of this.props.data ) {
 				if ( ! post.hasOwnProperty( prop ) ) {
-					reachOutToApi = true;
+					doRequest = true;
 					return;
 				}
 				returnData[ prop ] = post[ prop ];
 			}
 
-			if ( ! reachOutToApi ) {
+			if ( ! doRequest ) {
 				this.props.onPostSelect( returnData );
 				this.setState( {
 					input: '',
@@ -319,34 +319,35 @@ class SwiperPostSelector extends Component {
 					/>
 
 					{ loading && <Spinner /> }
+
+					{ showSuggestions && !! posts.length && (
+						<Popover position="bottom" focusOnMount={ false }>
+							<div
+								className="editor-url-input__suggestions tyme-suggestions"
+								id={ `editor-url-input-suggestions-${ instanceId }` }
+								ref={ this.bindListNode }
+								role="listbox"
+							>
+								{ posts.map( ( post, index ) => (
+									<button
+										key={ post.id }
+										role="option"
+										tabIndex="-1"
+										id={ `editor-url-input-suggestion-${ instanceId }-${ index }` }
+										ref={ this.bindSuggestionNode( index ) }
+										className={ `editor-url-input__suggestion ${
+											index === selectedSuggestion ? 'is-selected' : ''
+										}` }
+										onClick={ () => this.selectPost( post ) }
+										aria-selected={ index === selectedSuggestion }
+									>
+										{ decodeEntities( post.title ) || '(no title)' }
+									</button>
+								) ) }
+							</div>
+						</Popover>
+					) }
 				</div>
-				{ showSuggestions && !! posts.length && (
-					<Popover position="bottom" noArrow focusOnMount={ false }>
-						<div
-							className="editor-url-input__suggestions"
-							id={ `editor-url-input-suggestions-${ instanceId }` }
-							ref={ this.bindListNode }
-							role="listbox"
-						>
-							{ posts.map( ( post, index ) => (
-								<button
-									key={ post.id }
-									role="option"
-									tabIndex="-1"
-									id={ `editor-url-input-suggestion-${ instanceId }-${ index }` }
-									ref={ this.bindSuggestionNode( index ) }
-									className={ `editor-url-input__suggestion ${
-										index === selectedSuggestion ? 'is-selected' : ''
-									}` }
-									onClick={ () => this.selectPost( post ) }
-									aria-selected={ index === selectedSuggestion }
-								>
-									{ decodeEntities( post.title ) || '(no title)' }
-								</button>
-							) ) }
-						</div>
-					</Popover>
-				) }
 
 				{ this.renderPosts() }
 			</Fragment>

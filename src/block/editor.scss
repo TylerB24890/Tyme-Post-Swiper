@@ -10,3 +10,11 @@
 		text-align: center;
 	}
 }
+
+.editor-url-input__suggestions {
+	&.tyme-suggestions {
+		.editor-url-input__suggestion {
+			font-size: 15px;
+		}
+	}
+}

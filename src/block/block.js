@@ -18,6 +18,7 @@ import {
 	SwiperLoopToggle,
 	SwiperAutoPlayToggle,
 	SwiperCenterToggle,
+	SwiperMoreToggle,
 } from './components';
 
 // WP Components
@@ -70,6 +71,10 @@ registerBlockType( 'tyme/post-swiper', {
 			type: 'boolean',
 			default: true,
 		},
+		swiperReadMore: {
+			type: 'boolean',
+			default: false,
+		},
 	},
 
 	/**
@@ -79,7 +84,7 @@ registerBlockType( 'tyme/post-swiper', {
 	 * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
 	 */
 	edit: ( props ) => {
-		const { posts, swiperEffect, swiperPerView, swiperLoop, swiperAutoPlay, swiperCentered } = props.attributes;
+		const { posts, swiperEffect, swiperPerView, swiperLoop, swiperAutoPlay, swiperCentered, swiperReadMore } = props.attributes;
 
 		return (
 			<Fragment>
@@ -130,6 +135,12 @@ registerBlockType( 'tyme/post-swiper', {
 							} }
 							value={ swiperAutoPlay }
 						/>
+						<SwiperMoreToggle
+							onChange={ ( moreVal ) => {
+								props.setAttributes( { swiperReadMore: moreVal } );
+							} }
+							value={ swiperReadMore }
+						/>
 					</PanelBody>
 				</InspectorControls>
 				<div
@@ -143,8 +154,13 @@ registerBlockType( 'tyme/post-swiper', {
 					<div className="swiper-wrapper">
 						{ posts.map( post => (
 							<div className="swiper-slide" key={ post.id }>
-								<h2>{ post.title }</h2>
+								<h2><a href={ post.url }>{ post.title }</a></h2>
 								<RawHTML>{ post.excerpt }</RawHTML>
+								{ swiperReadMore ? (
+									<div className="read-more">
+										<a href={ post.url }>{ __( 'Read more...' ) }</a>
+									</div>
+								) : '' }
 							</div>
 						) ) }
 					</div>
@@ -160,7 +176,7 @@ registerBlockType( 'tyme/post-swiper', {
 	 * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
 	 */
 	save: ( props ) => {
-		const { swiperEffect, swiperPerView, swiperLoop, swiperAutoPlay, swiperCentered, posts } = props.attributes;
+		const { posts, swiperEffect, swiperPerView, swiperLoop, swiperAutoPlay, swiperCentered, swiperReadMore } = props.attributes;
 
 		return (
 			<div
@@ -174,8 +190,13 @@ registerBlockType( 'tyme/post-swiper', {
 				<div className="swiper-wrapper">
 					{ posts.map( post => (
 						<div className="swiper-slide" key={ post.id }>
-							<h2>{ post.title }</h2>
+							<h2><a href={ post.url }>{ post.title }</a></h2>
 							<RawHTML>{ post.excerpt }</RawHTML>
+							{ swiperReadMore ? (
+								<div className="read-more">
+									<a href={ post.url }>{ __( 'Read more...' ) }</a>
+								</div>
+							) : '' }
 						</div>
 					) ) }
 				</div>
