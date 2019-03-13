@@ -1,6 +1,7 @@
 /**
  * Swiper Settings
- * Show the 'Read More...' link after the excerpt or not
+ * Show the 'Read more...' link after the excerpt or not
+ * Also includes input for changing the "Read more..." text
  *
  * @type 	{Object}
  * @author	Tyler Bailey <tylerb.media@gmail.com>

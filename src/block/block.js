@@ -19,6 +19,8 @@ import {
 	SwiperAutoPlayToggle,
 	SwiperCenterToggle,
 	SwiperMoreToggle,
+	SwiperNavigationToggle,
+	SwiperPaginationToggle,
 } from './components';
 
 // WP Components
@@ -79,6 +81,18 @@ registerBlockType( 'tyme/post-swiper', {
 			type: 'string',
 			default: __( 'Read more...' ),
 		},
+		swiperShowNav: {
+			type: 'boolean',
+			default: false,
+		},
+		swiperShowPagi: {
+			type: 'boolean',
+			default: false,
+		},
+		swiperPagiEffect: {
+			type: 'boolean',
+			default: false,
+		},
 	},
 
 	/**
@@ -88,7 +102,19 @@ registerBlockType( 'tyme/post-swiper', {
 	 * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
 	 */
 	edit: ( props ) => {
-		const { posts, swiperEffect, swiperPerView, swiperLoop, swiperAutoPlay, swiperCentered, swiperReadMore, swiperReadMoreText } = props.attributes;
+		const {
+			posts,
+			swiperEffect,
+			swiperPerView,
+			swiperLoop,
+			swiperAutoPlay,
+			swiperCentered,
+			swiperReadMore,
+			swiperReadMoreText,
+			swiperShowNav,
+			swiperShowPagi,
+			swiperPagiEffect,
+		} = props.attributes;
 
 		return (
 			<Fragment>
@@ -139,6 +165,20 @@ registerBlockType( 'tyme/post-swiper', {
 							} }
 							value={ swiperAutoPlay }
 						/>
+						<SwiperNavigationToggle
+							onChange={ ( navVal ) => {
+								props.setAttributes( { swiperShowNav: navVal } );
+							} }
+						/>
+						<SwiperPaginationToggle
+							onChange={ ( pagiVal ) => {
+								props.setAttributes( { swiperShowPagi: pagiVal } );
+							} }
+							effectChange={ ( pagiEffect ) => {
+								props.setAttributes( { swiperPagiEffect: pagiEffect } );
+							} }
+							effectVal={ swiperPagiEffect }
+						/>
 						<SwiperMoreToggle
 							onChange={ ( moreVal ) => {
 								props.setAttributes( { swiperReadMore: moreVal } );
@@ -158,6 +198,8 @@ registerBlockType( 'tyme/post-swiper', {
 					data-swiper-loop={ swiperLoop }
 					data-swiper-autoplay={ swiperAutoPlay }
 					data-swiper-centered={ swiperCentered }
+					data-swiper-pagination={ swiperShowPagi }
+					data-swiper-pagination-effect={ swiperPagiEffect }
 				>
 					<div className="swiper-wrapper">
 						{ posts.map( post => (
@@ -172,6 +214,17 @@ registerBlockType( 'tyme/post-swiper', {
 							</div>
 						) ) }
 					</div>
+
+					{ swiperShowNav ? (
+						<Fragment>
+							<div className="swiper-button-next"></div>
+							<div className="swiper-button-prev"></div>
+						</Fragment>
+					) : '' }
+
+					{ swiperShowPagi ? (
+						<div className="swiper-pagination"></div>
+					) : '' }
 				</div>
 			</Fragment>
 		);
@@ -184,7 +237,19 @@ registerBlockType( 'tyme/post-swiper', {
 	 * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
 	 */
 	save: ( props ) => {
-		const { posts, swiperEffect, swiperPerView, swiperLoop, swiperAutoPlay, swiperCentered, swiperReadMore, swiperReadMoreText } = props.attributes;
+		const {
+			posts,
+			swiperEffect,
+			swiperPerView,
+			swiperLoop,
+			swiperAutoPlay,
+			swiperCentered,
+			swiperReadMore,
+			swiperReadMoreText,
+			swiperShowNav,
+			swiperShowPagi,
+			swiperPagiEffect,
+		} = props.attributes;
 
 		return (
 			<div
@@ -194,6 +259,9 @@ registerBlockType( 'tyme/post-swiper', {
 				data-swiper-loop={ swiperLoop }
 				data-swiper-autoplay={ swiperAutoPlay }
 				data-swiper-centered={ swiperCentered }
+				data-swiper-navigation={ swiperShowNav }
+				data-swiper-pagination={ swiperShowPagi }
+				data-swiper-pagination-effect={ swiperPagiEffect }
 			>
 				<div className="swiper-wrapper">
 					{ posts.map( post => (
@@ -208,6 +276,17 @@ registerBlockType( 'tyme/post-swiper', {
 						</div>
 					) ) }
 				</div>
+
+				{ swiperShowNav ? (
+					<Fragment>
+						<div className="swiper-button-next"></div>
+						<div className="swiper-button-prev"></div>
+					</Fragment>
+				) : '' }
+
+				{ swiperShowPagi ? (
+					<div className="swiper-pagination"></div>
+				) : '' }
 			</div>
 		);
 	},
