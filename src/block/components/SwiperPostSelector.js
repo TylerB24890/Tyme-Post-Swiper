@@ -53,22 +53,36 @@ class SwiperPostSelector extends Component {
 		};
 	}
 
-	// Remove Suggestions
+	/**
+	 * Remove post suggestions list
+	 */
 	componentWillUnmount() {
 		delete this.suggestionsRequest;
 	}
 
+	/**
+	 * Bind the Suggestion List object
+	 * @param {object} ref The complete suggestion list
+	 */
 	bindListNode( ref ) {
 		this.listNode = ref;
 	}
 
+	/**
+	 * Bind a single post suggestion to suggested nodes.
+	 * @param {string} index Bind single post suggestion
+	 * @returns {array} Updated array of suggested posts
+	 */
 	bindSuggestionNode( index ) {
 		return ref => {
 			this.suggestionNodes[ index ] = ref;
 		};
 	}
 
-	// Update Suggestions List
+	/**
+	 * Update the suggested post list based on user input
+	 * @param {string} value User input value
+	 */
 	updateSuggestions( value ) {
 		if ( value.length < 2 || /^https?:/.test( value ) ) {
 			this.setState( {
@@ -117,13 +131,20 @@ class SwiperPostSelector extends Component {
 		this.suggestionsRequest = request;
 	}
 
+	/**
+	 * Execute the onChange event for PostSelector input
+	 * @param {event} event The event that occurred
+	 */
 	onChange( event ) {
 		const inputValue = event.target.value;
 		this.setState( { input: inputValue } );
 		this.updateSuggestions( inputValue );
 	}
 
-	// Listen for key events (up, down, enter)
+	/**
+	 * Listen for UP, DOWN, ENTER keyboard events and execute actions accordingly
+	 * @param {event} event Keyboard key event
+	 */
 	onKeyDown( event ) {
 		const { showSuggestions, selectedSuggestion, posts, loading } = this.state;
 
@@ -165,7 +186,10 @@ class SwiperPostSelector extends Component {
 		}
 	}
 
-	// Retreive the post data upon selection
+	/**
+	 * Select a suggested post from the suggestion list and retrieve all post data
+	 * @param {object} post The WP Post Object
+	 */
 	selectPost( post ) {
 		if ( this.props.data ) {
 			let doRequest = false;
@@ -208,7 +232,10 @@ class SwiperPostSelector extends Component {
 		} );
 	}
 
-	// Suggested posts markup
+	/**
+	 * Render the selected posts list below the Post Selector input
+	 * @returns {html} HTML markup for selected post list
+	 */
 	renderPosts() {
 		return (
 			<ul>
@@ -281,7 +308,10 @@ class SwiperPostSelector extends Component {
 		);
 	}
 
-	// Display the input + suggested posts
+	/**
+	 * Actually render out the post selector input AND selected posts
+	 * @return {html} HTML markup for the component editor
+	 */
 	render() {
 		const { autoFocus = true, instanceId } = this.props;
 		const {

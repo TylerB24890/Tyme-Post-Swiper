@@ -49,10 +49,6 @@ registerBlockType( 'tyme/post-swiper', {
 			type: 'array',
 			default: [],
 		},
-		showFeaturedImage: {
-			default: false,
-			type: 'boolean',
-		},
 		swiperEffect: {
 			type: 'string',
 			default: 'slide',
