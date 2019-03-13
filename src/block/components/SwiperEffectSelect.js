@@ -4,7 +4,7 @@
  *
  * Provides a dropdown of the available effects built into Tyme Swiper
  *
- * @type 		{Object}
+ * @type 	{Object}
  * @author	Tyler Bailey <tylerb.media@gmail.com>
  * @package tyme-post-swiper
  */

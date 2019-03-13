@@ -4,7 +4,7 @@
  *
  * If set, Swiper carousel will loop between the selected posts infinitely.
  *
- * @type 		{Object}
+ * @type 	{Object}
  * @author	Tyler Bailey <tylerb.media@gmail.com>
  * @package tyme-post-swiper
  */

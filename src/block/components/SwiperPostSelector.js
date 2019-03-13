@@ -5,7 +5,7 @@
  * Provides an input field for users to search for posts and select them
  * to cycle through the Post Swiper carousel.
  *
- * @type 		{Object}
+ * @type 	{Object}
  * @author	Tyler Bailey <tylerb.media@gmail.com>
  * @package tyme-post-swiper
  */

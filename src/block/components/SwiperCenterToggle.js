@@ -5,7 +5,7 @@
  * If set, Posts will be center aligned within the container.
  * If not, left align is default.
  *
- * @type 		{Object}
+ * @type 	{Object}
  * @author	Tyler Bailey <tylerb.media@gmail.com>
  * @package tyme-post-swiper
  */

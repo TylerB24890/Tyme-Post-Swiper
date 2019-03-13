@@ -4,7 +4,7 @@
  *
  * If set, Swiper carousel will begin cycling through posts on load.
  *
- * @type 		{Object}
+ * @type 	{Object}
  * @author	Tyler Bailey <tylerb.media@gmail.com>
  * @package tyme-post-swiper
  */

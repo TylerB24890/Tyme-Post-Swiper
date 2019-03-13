@@ -4,7 +4,7 @@
  *
  * Lets the user choose to show between 1-4 posts per slide.
  *
- * @type 		{Object}
+ * @type 	{Object}
  * @author	Tyler Bailey <tylerb.media@gmail.com>
  * @package tyme-post-swiper
  */
