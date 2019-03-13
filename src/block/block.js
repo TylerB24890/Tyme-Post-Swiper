@@ -75,6 +75,10 @@ registerBlockType( 'tyme/post-swiper', {
 			type: 'boolean',
 			default: false,
 		},
+		swiperReadMoreText: {
+			type: 'string',
+			default: __( 'Read more...' ),
+		},
 	},
 
 	/**
@@ -84,7 +88,7 @@ registerBlockType( 'tyme/post-swiper', {
 	 * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
 	 */
 	edit: ( props ) => {
-		const { posts, swiperEffect, swiperPerView, swiperLoop, swiperAutoPlay, swiperCentered, swiperReadMore } = props.attributes;
+		const { posts, swiperEffect, swiperPerView, swiperLoop, swiperAutoPlay, swiperCentered, swiperReadMore, swiperReadMoreText } = props.attributes;
 
 		return (
 			<Fragment>
@@ -140,6 +144,10 @@ registerBlockType( 'tyme/post-swiper', {
 								props.setAttributes( { swiperReadMore: moreVal } );
 							} }
 							value={ swiperReadMore }
+							moreText={ swiperReadMoreText }
+							onTextChange={ ( moreText ) => {
+								props.setAttributes( { swiperReadMoreText: moreText } );
+							} }
 						/>
 					</PanelBody>
 				</InspectorControls>
@@ -158,7 +166,7 @@ registerBlockType( 'tyme/post-swiper', {
 								<RawHTML>{ post.excerpt }</RawHTML>
 								{ swiperReadMore ? (
 									<div className="read-more">
-										<a href={ post.url }>{ __( 'Read more...' ) }</a>
+										<a href={ post.url }>{ swiperReadMoreText }</a>
 									</div>
 								) : '' }
 							</div>
@@ -176,7 +184,7 @@ registerBlockType( 'tyme/post-swiper', {
 	 * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
 	 */
 	save: ( props ) => {
-		const { posts, swiperEffect, swiperPerView, swiperLoop, swiperAutoPlay, swiperCentered, swiperReadMore } = props.attributes;
+		const { posts, swiperEffect, swiperPerView, swiperLoop, swiperAutoPlay, swiperCentered, swiperReadMore, swiperReadMoreText } = props.attributes;
 
 		return (
 			<div
@@ -194,7 +202,7 @@ registerBlockType( 'tyme/post-swiper', {
 							<RawHTML>{ post.excerpt }</RawHTML>
 							{ swiperReadMore ? (
 								<div className="read-more">
-									<a href={ post.url }>{ __( 'Read more...' ) }</a>
+									<a href={ post.url }>{ swiperReadMoreText }</a>
 								</div>
 							) : '' }
 						</div>
