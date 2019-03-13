@@ -25,7 +25,7 @@ class PostSwiper {
 	public function enqueue_global_assets() {
 		wp_enqueue_script(
 			'tyme_post_swiper-swiper-script',
-      TYME_URL . '/dist/vendor/swiper.min.js',
+			TYME_URL . '/dist/vendor/swiper.min.js',
 			array()
 		);
 
@@ -39,7 +39,7 @@ class PostSwiper {
 		// Styles.
 		wp_enqueue_style(
 			'tyme_post_swiper-css',
-      TYME_URL . '/dist/blocks.style.build.css',
+			TYME_URL . '/dist/blocks.style.build.css',
 			array( 'wp-editor' )
 		);
 	}
@@ -53,14 +53,14 @@ class PostSwiper {
 		// Scripts.
 		wp_enqueue_script(
 			'tyme_post_swiper-js',
-      TYME_URL . '/dist/blocks.build.js',
+			TYME_URL . '/dist/blocks.build.js',
 			array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor', 'wp-html-entities', 'wp-keycodes', 'wp-components', 'wp-compose', 'wp-url' ),
 			true
 		);
 
 		wp_enqueue_script(
 			'tyme_post_swiper-be-js',
-      TYME_URL . '/dist/tyme-swiper-be.js',
+			TYME_URL . '/dist/tyme-swiper-be.js',
 			array( 'jquery' ),
 			true
 		);
@@ -68,7 +68,7 @@ class PostSwiper {
 		// Styles.
 		wp_enqueue_style(
 			'tyme_post_swiper-editor-css',
-      TYME_URL . '/dist/blocks.editor.build.css',
+			TYME_URL . '/dist/blocks.editor.build.css',
 			array( 'wp-edit-blocks' )
 		);
 	}
