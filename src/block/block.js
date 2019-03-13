@@ -169,6 +169,7 @@ registerBlockType( 'tyme/post-swiper', {
 							onChange={ ( navVal ) => {
 								props.setAttributes( { swiperShowNav: navVal } );
 							} }
+							value={ swiperShowNav }
 						/>
 						<SwiperPaginationToggle
 							onChange={ ( pagiVal ) => {
@@ -177,6 +178,7 @@ registerBlockType( 'tyme/post-swiper', {
 							effectChange={ ( pagiEffect ) => {
 								props.setAttributes( { swiperPagiEffect: pagiEffect } );
 							} }
+							value={ swiperShowPagi }
 							effectVal={ swiperPagiEffect }
 						/>
 						<SwiperMoreToggle
@@ -198,8 +200,11 @@ registerBlockType( 'tyme/post-swiper', {
 					data-swiper-loop={ swiperLoop }
 					data-swiper-autoplay={ swiperAutoPlay }
 					data-swiper-centered={ swiperCentered }
+					data-swiper-navigation={ swiperShowNav }
 					data-swiper-pagination={ swiperShowPagi }
 					data-swiper-pagination-effect={ swiperPagiEffect }
+					data-block-selected={ props.isSelected }
+					data-swiper-more={ swiperReadMore }
 				>
 					<div className="swiper-wrapper">
 						{ posts.map( post => (
@@ -262,6 +267,7 @@ registerBlockType( 'tyme/post-swiper', {
 				data-swiper-navigation={ swiperShowNav }
 				data-swiper-pagination={ swiperShowPagi }
 				data-swiper-pagination-effect={ swiperPagiEffect }
+				data-swiper-more={ swiperReadMore }
 			>
 				<div className="swiper-wrapper">
 					{ posts.map( post => (

@@ -23,8 +23,16 @@
 	}
 
 	&[data-swiper-pagination="true"] {
+		padding-bottom: 15px;
+
 		.swiper-pagination {
 			bottom: 0;
+		}
+	}
+
+	.swiper-slide {
+		.read-more {
+			margin-bottom: 15px;
 		}
 	}
 }

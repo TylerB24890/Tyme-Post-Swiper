@@ -1,14 +1,1 @@
-/**
- * SCSS Variables & Shared Styles
-*/
-/**
- * #.# Editor Styles
- *
- * CSS for just Backend enqueued after style.scss
- * which makes it higher in priority.
- */
-.swiper-container[data-swiper-centered="true"] {
-  text-align: center; }
-
-.editor-url-input__suggestions.tyme-suggestions .editor-url-input__suggestion {
-  font-size: 15px; }
+.swiper-container{z-index:-1 !important}.swiper-container[data-swiper-centered="true"]{text-align:center}.swiper-container[data-block-selected="true"]{z-index:1 !important}.editor-url-input__suggestions.tyme-suggestions .editor-url-input__suggestion{font-size:15px}

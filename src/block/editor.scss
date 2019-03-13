@@ -6,8 +6,14 @@
  */
 
 .swiper-container  {
-  &[data-swiper-centered="true"] {
+	z-index: -1 !important;
+
+  	&[data-swiper-centered="true"] {
 		text-align: center;
+	}
+
+	&[data-block-selected="true"] {
+		z-index: 1 !important;
 	}
 }
 
