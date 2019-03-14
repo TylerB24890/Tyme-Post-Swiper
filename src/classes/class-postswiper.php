@@ -12,10 +12,34 @@ namespace Tyme\PostSwiper\Core;
 
 class PostSwiper {
 
+	/**
+	 * Static reference to the single instance
+	 *
+	 * @var object
+	 */
+	protected static $instance;
+
+	/**
+	 * Object constructor
+	 */
 	public function __construct() {
 		add_action( 'enqueue_block_assets', array( $this, 'enqueue_global_assets' ) );
 		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_editor_assets' ) );
 	}
+
+	/**
+	 * Get object instance, set one up if we don't have one
+	 *
+	 * @return Content_Type
+	 */
+	public static function get_instance() {
+		if ( ! self::$instance ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
 
   /**
    * Enqueue block assets for both frontend & backend

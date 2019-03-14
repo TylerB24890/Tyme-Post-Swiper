@@ -22,9 +22,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'TYME_DIR', plugin_dir_path( __FILE__ ) );
 define( 'TYME_URL', plugin_dir_url( __FILE__ ) );
 
-function run() {
-	require_once TYME_DIR . 'src/classes/class-postswiper.php';
-	new PostSwiper();
-}
+require_once TYME_DIR . 'src/classes/class-postswiper.php';
 
-\Tyme\PostSwiper\Core\run();
+\Tyme\PostSwiper\Core\PostSwiper::get_instance();
