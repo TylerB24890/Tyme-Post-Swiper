@@ -1,3 +1,10 @@
+/**
+ * Initialize Tyme Post Swiper
+ *
+ * @author	Tyler Bailey <tylerb.media@gmail.com>
+ * @package	tyme-post-swiper
+ */
+
 const action = ( tyme.curPage && tyme.curPage === 'post.php' ? 'change' : 'DOMContentLoaded' );
 
 document.addEventListener( action, function() {
