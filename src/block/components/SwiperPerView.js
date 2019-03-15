@@ -38,7 +38,7 @@ class SwiperPerView extends Component {
 					this.onChange( newPerView );
 				} }
 				min={ 1 }
-				max={ 5 }
+				max={ 4 }
 			/>
 		);
 	}
