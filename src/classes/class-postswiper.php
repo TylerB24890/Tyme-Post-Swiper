@@ -56,7 +56,7 @@ class PostSwiper {
 		\wp_enqueue_script(
 			'tyme_post_swiper_init',
 			TYME_URL . 'dist/tyme-swiper.js',
-			array( 'tyme_post_swiper_swiper_script', 'jquery' ),
+			array( 'tyme_post_swiper_swiper_script' ),
 			true
 		);
 

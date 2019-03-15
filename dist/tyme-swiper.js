@@ -1,32 +1,27 @@
-( function( $ ) {
-	'use strict';
+const action = ( tyme.curPage && tyme.curPage === 'post.php' ? 'change' : 'DOMContentLoaded' );
 
-	const tyme = window.tyme || {};
-	const action = ( tyme.curPage && tyme.curPage === 'post.php' ? 'change' : 'ready' );
+document.addEventListener( action, function() {
+	const swiperContainer = document.querySelector( '.swiper-container' );
 
-	$( document ).on( action, function() {
-		const swiperContainer = $( '.swiper-container' );
+	const swiperOptions = {
+		autoplay: swiperContainer.getAttribute( 'data-swiper-autoplay' ),
+		loop: swiperContainer.getAttribute( 'data-swiper-loop' ),
+		slidesPerView: swiperContainer.getAttribute( 'data-swiper-perview' ),
+		centeredSlides: swiperContainer.getAttribute( 'data-swiper-centered' ),
+		effect: swiperContainer.getAttribute( 'data-swiper-effect' ),
+		navigation: ( swiperContainer.getAttribute( 'data-swiper-navigation' ) ? {
+			nextEl: '.swiper-button-next',
+			prevEl: '.swiper-button-prev',
+		} : false ),
+		pagination: ( swiperContainer.getAttribute( 'data-swiper-pagination' ) ? {
+			el: '.swiper-pagination',
+			dynamicBullets: swiperContainer.getAttribute( 'data-swiper-pagination-effect' ),
+		} : '' ),
+		fadeEffect: {
+			crossFade: true,
+		},
+		grabCursor: true,
+	};
 
-		const swiperOptions = {
-			autoplay: swiperContainer.data( 'swiper-autoplay' ),
-			loop: swiperContainer.data( 'swiper-loop' ),
-			slidesPerView: swiperContainer.data( 'swiper-perview' ),
-			centeredSlides: swiperContainer.data( 'swiper-centered' ),
-			effect: swiperContainer.data( 'swiper-effect' ),
-			navigation: ( swiperContainer.data( 'swiper-navigation' ) ? {
-				nextEl: '.swiper-button-next',
-				prevEl: '.swiper-button-prev',
-			} : false ),
-			pagination: ( swiperContainer.data( 'swiper-pagination' ) ? {
-				el: '.swiper-pagination',
-				dynamicBullets: swiperContainer.data( 'swiper-pagination-effect' ),
-			} : '' ),
-			fadeEffect: {
-				crossFade: true,
-			},
-			grabCursor: true,
-		};
-
-		new Swiper( swiperContainer, swiperOptions );
-	} );
-}( jQuery ) );
+	new Swiper( swiperContainer, swiperOptions );
+} );

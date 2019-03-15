@@ -1,0 +1,13 @@
+{
+    "name": "tyme/tyme-post-swiper",
+    "description": "A highly customizable Gutenberg Block that renders a carousel of selected posts from your WordPress database.",
+    "type": "wordpress-plugin",
+    "authors": [
+        {
+            "name": "Tyler Bailey",
+            "email": "tylerb.media@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
