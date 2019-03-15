@@ -217,7 +217,7 @@ class SwiperPostSelector extends Component {
 			}
 		}
 		apiFetch( {
-			path: `/wp/v2/${ post.subtype }s/${ post.id }`,
+			path: `/wp/v2/${ post.subtype }s/${ post.id }?_embed`,
 		} ).then( response => {
 			const fullpost = {
 				title: decodeEntities( response.title.rendered ),
@@ -225,7 +225,9 @@ class SwiperPostSelector extends Component {
 				excerpt: decodeEntities( response.excerpt.rendered ),
 				url: response.link,
 				date: response.human_date,
+				image: response._embedded[ 'wp:featuredmedia' ][ '0' ].source_url,
 			};
+
 			this.props.onPostSelect( fullpost );
 		} );
 

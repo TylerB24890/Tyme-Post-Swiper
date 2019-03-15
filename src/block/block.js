@@ -21,6 +21,7 @@ import {
 	SwiperMoreToggle,
 	SwiperNavigationToggle,
 	SwiperPaginationToggle,
+	SwiperFeaturedImage,
 } from './components';
 
 // WP Components
@@ -89,6 +90,10 @@ registerBlockType( 'tyme/post-swiper', {
 			type: 'boolean',
 			default: false,
 		},
+		swiperFeaturedImage: {
+			type: 'boolean',
+			default: true,
+		},
 	},
 
 	/**
@@ -110,12 +115,13 @@ registerBlockType( 'tyme/post-swiper', {
 			swiperShowNav,
 			swiperShowPagi,
 			swiperPagiEffect,
+			swiperFeaturedImage,
 		} = props.attributes;
 
 		return (
 			<Fragment>
 				<InspectorControls>
-					<PanelBody title={ __( 'Swiper Posts' ) }>
+					<PanelBody title={ __( 'Swiper Posts' ) } icon="edit">
 						<SwiperPostSelector
 							onPostSelect={ ( post ) => {
 								posts.push( post );
@@ -129,8 +135,20 @@ registerBlockType( 'tyme/post-swiper', {
 							showSuggestions={ true }
 						/>
 					</PanelBody>
+					{
+						posts && posts.length > 0 ? (
+							<PanelBody title={ __( 'Post Settings' ) } icon="edit">
+								<SwiperFeaturedImage
+									onChange={ ( displayFeatured ) => {
+										props.setAttributes( { swiperFeaturedImage: displayFeatured } );
+									} }
+									value={ swiperFeaturedImage }
+								/>
+							</PanelBody>
+						) : ''
+					}
 
-					<PanelBody title={ __( 'Swiper Settings' ) }>
+					<PanelBody title={ __( 'Swiper Settings' ) } initialOpen={ false } icon="slides">
 						<SwiperEffectSelect
 							onChange={ ( newEffect ) => {
 								props.setAttributes( { swiperEffect: newEffect } );
@@ -205,6 +223,11 @@ registerBlockType( 'tyme/post-swiper', {
 					<div className="swiper-wrapper">
 						{ posts.map( post => (
 							<div className="swiper-slide" key={ post.id }>
+								{
+									swiperFeaturedImage && post.image.length > 1 ? (
+										<img src={ post.image } alt={ post.title } />
+									) : ''
+								}
 								<h2><a href={ post.url }>{ post.title }</a></h2>
 								<RawHTML>{ post.excerpt }</RawHTML>
 								{ swiperReadMore ? (
@@ -250,6 +273,7 @@ registerBlockType( 'tyme/post-swiper', {
 			swiperShowNav,
 			swiperShowPagi,
 			swiperPagiEffect,
+			swiperFeaturedImage,
 		} = props.attributes;
 
 		return (
@@ -268,6 +292,11 @@ registerBlockType( 'tyme/post-swiper', {
 				<div className="swiper-wrapper">
 					{ posts.map( post => (
 						<div className="swiper-slide" key={ post.id }>
+							{
+								swiperFeaturedImage && post.image.length > 1 ? (
+									<img src={ post.image } alt={ post.title } />
+								) : ''
+							}
 							<h2><a href={ post.url }>{ post.title }</a></h2>
 							<RawHTML>{ post.excerpt }</RawHTML>
 							{ swiperReadMore ? (

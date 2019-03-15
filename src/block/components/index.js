@@ -6,3 +6,4 @@ export { SwiperAutoPlayToggle } from './SwiperAutoPlayToggle';
 export { SwiperMoreToggle } from './SwiperMoreToggle';
 export { SwiperNavigationToggle } from './SwiperNavigationToggle';
 export { SwiperPaginationToggle } from './SwiperPaginationToggle';
+export { SwiperFeaturedImage } from './SwiperFeaturedImage';
