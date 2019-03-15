@@ -21,7 +21,10 @@ const { addQueryArgs } = wp.url;
 const { __ } = wp.i18n;
 
 // Stop script from executing
-const stopEventPropagation = event => event.stopPropagation();
+const stopExecution = ( event ) => {
+	event.stopPropagation();
+	event.stopPropagation();
+};
 
 // Wait to execute function
 function debounce( func, wait = 100 ) {
@@ -84,7 +87,10 @@ class SwiperPostSelector extends Component {
 	 * @param {string} value User input value
 	 */
 	updateSuggestions( value ) {
-		if ( value.length < 2 || /^https?:/.test( value ) ) {
+		const reUrl = /^https?:/;
+		const searchPath = '/wp/v2/search';
+
+		if ( value.length < 2 || reUrl.test( value ) ) {
 			this.setState( {
 				showSuggestions: false,
 				selectedSuggestion: null,
@@ -100,8 +106,8 @@ class SwiperPostSelector extends Component {
 			loading: true,
 		} );
 
-		const request = apiFetch( {
-			path: addQueryArgs( '/wp/v2/search', {
+		const searchRequest = apiFetch( {
+			path: addQueryArgs( searchPath, {
 				search: value,
 				per_page: 20,
 				type: 'post',
@@ -109,9 +115,9 @@ class SwiperPostSelector extends Component {
 			} ),
 		} );
 
-		request
+		searchRequest
 			.then( posts => {
-				if ( this.suggestionsRequest !== request ) {
+				if ( this.suggestionsRequest !== searchRequest ) {
 					return;
 				}
 
@@ -121,14 +127,14 @@ class SwiperPostSelector extends Component {
 				} );
 			} )
 			.catch( () => {
-				if ( this.suggestionsRequest === request ) {
+				if ( this.suggestionsRequest === searchRequest ) {
 					this.setState( {
 						loading: false,
 					} );
 				}
 			} );
 
-		this.suggestionsRequest = request;
+		this.suggestionsRequest = searchRequest;
 	}
 
 	/**
@@ -154,8 +160,7 @@ class SwiperPostSelector extends Component {
 
 		switch ( event.keyCode ) {
 			case UP: {
-				event.stopPropagation();
-				event.preventDefault();
+				stopExecution( event );
 				const previousIndex = ! selectedSuggestion ?
 					posts.length - 1 :
 					selectedSuggestion - 1;
@@ -165,8 +170,7 @@ class SwiperPostSelector extends Component {
 				break;
 			}
 			case DOWN: {
-				event.stopPropagation();
-				event.preventDefault();
+				stopExecution( event );
 				const nextIndex =
 					selectedSuggestion === null || selectedSuggestion === posts.length - 1 ?
 						0 :
@@ -178,7 +182,7 @@ class SwiperPostSelector extends Component {
 			}
 			case ENTER: {
 				if ( this.state.selectedSuggestion !== null ) {
-					event.stopPropagation();
+					stopExecution( event );
 					const post = this.state.posts[ this.state.selectedSuggestion ];
 					this.selectPost( post );
 				}
@@ -260,11 +264,7 @@ class SwiperPostSelector extends Component {
 									} }
 									icon="arrow-up-alt2"
 									onClick={ () => {
-										this.props.posts.splice(
-											i - 1,
-											0,
-											this.props.posts.splice( i, 1 )[ 0 ]
-										);
+										this.props.posts.splice( i - 1, 0, this.props.posts.splice( i, 1 )[ 0 ] );
 										this.props.onChange( this.props.posts );
 										this.setState( { state: this.state } );
 									} }
@@ -280,11 +280,7 @@ class SwiperPostSelector extends Component {
 									} }
 									icon="arrow-down-alt2"
 									onClick={ () => {
-										this.props.posts.splice(
-											i + 1,
-											0,
-											this.props.posts.splice( i, 1 )[ 0 ]
-										);
+										this.props.posts.splice( i + 1, 0, this.props.posts.splice( i, 1 )[ 0 ] );
 										this.props.onChange( this.props.posts );
 										this.setState( { state: this.state } );
 									} }
@@ -297,7 +293,6 @@ class SwiperPostSelector extends Component {
 								onClick={ () => {
 									this.props.posts.splice( i, 1 );
 									this.props.onChange( this.props.posts );
-
 									this.setState( { state: this.state } );
 								} }
 							/>
@@ -333,7 +328,7 @@ class SwiperPostSelector extends Component {
 						required
 						value={ input }
 						onChange={ this.onChange }
-						onInput={ stopEventPropagation }
+						onInput={ stopExecution }
 						placeholder={ __( 'Type page or post name' ) }
 						onKeyDown={ this.onKeyDown }
 						role="combobox"
@@ -371,7 +366,7 @@ class SwiperPostSelector extends Component {
 										onClick={ () => this.selectPost( post ) }
 										aria-selected={ index === selectedSuggestion }
 									>
-										{ decodeEntities( post.title ) || '(no title)' }
+										{ decodeEntities( post.title ) || __( '(no title)' ) }
 									</button>
 								) ) }
 							</div>
