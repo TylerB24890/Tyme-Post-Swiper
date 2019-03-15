@@ -20,4 +20,4 @@ Tyme Post Swiper is a Gutenberg Block plugin that renders a mobile/touch device 
 ## Screenshots
 ![Post Selector](http://tymeinteractive.com/plugins/img/tps-block-post-selector.png)
 ![Block Settings](http://tymeinteractive.com/plugins/img/tps-block-settings.png)
-![Block Editor](http://tymeinteractive.com/plugins/img/tps-block-editor.png)
+![Block Editor Image](http://tymeinteractive.com/plugins/img/tps-block-editor2.png)
