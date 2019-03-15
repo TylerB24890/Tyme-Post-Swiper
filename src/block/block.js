@@ -135,18 +135,15 @@ registerBlockType( 'tyme/post-swiper', {
 							showSuggestions={ true }
 						/>
 					</PanelBody>
-					{
-						posts && posts.length > 0 ? (
-							<PanelBody title={ __( 'Post Settings' ) } icon="edit">
-								<SwiperFeaturedImage
-									onChange={ ( displayFeatured ) => {
-										props.setAttributes( { swiperFeaturedImage: displayFeatured } );
-									} }
-									value={ swiperFeaturedImage }
-								/>
-							</PanelBody>
-						) : ''
-					}
+
+					<PanelBody title={ __( 'Post Settings' ) } icon="edit">
+						<SwiperFeaturedImage
+							onChange={ ( displayFeatured ) => {
+								props.setAttributes( { swiperFeaturedImage: displayFeatured } );
+							} }
+							value={ swiperFeaturedImage }
+						/>
+					</PanelBody>
 
 					<PanelBody title={ __( 'Swiper Settings' ) } initialOpen={ false } icon="slides">
 						<SwiperEffectSelect
