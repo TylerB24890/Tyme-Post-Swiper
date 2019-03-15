@@ -224,7 +224,7 @@ class SwiperPostSelector extends Component {
 				id: response.id,
 				excerpt: decodeEntities( response.excerpt.rendered ),
 				url: response.link,
-				date: response.human_date,
+				date: response.date,
 				image: '',
 			};
 

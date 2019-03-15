@@ -80,7 +80,7 @@ class PostSwiper {
 		\wp_enqueue_script(
 			'tyme_post_swiper-js',
 			TYME_URL . 'dist/blocks.build.js',
-			array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor', 'wp-html-entities', 'wp-keycodes', 'wp-components', 'wp-compose', 'wp-url' ),
+			array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor', 'wp-html-entities', 'wp-keycodes', 'wp-components', 'wp-compose', 'wp-url', 'wp-date' ),
 			true
 		);
 

@@ -22,6 +22,7 @@ import {
 	SwiperNavigationToggle,
 	SwiperPaginationToggle,
 	SwiperFeaturedImage,
+	SwiperDateToggle,
 } from './components';
 
 // WP Components
@@ -30,6 +31,7 @@ const { registerBlockType } = wp.blocks;
 const { Fragment, RawHTML } = wp.element;
 const { InspectorControls } = wp.editor;
 const { PanelBody } = wp.components;
+const { dateI18n } = wp.date;
 
 /**
  * Register Gutenberg Block
@@ -98,6 +100,10 @@ registerBlockType( 'tyme/post-swiper', {
 			type: 'boolean',
 			default: false,
 		},
+		swiperShowDate: {
+			type: 'boolean',
+			default: false,
+		},
 	},
 
 	/**
@@ -121,6 +127,7 @@ registerBlockType( 'tyme/post-swiper', {
 			swiperPagiEffect,
 			swiperFeaturedImage,
 			swiperLinkFeaturedImage,
+			swiperShowDate,
 		} = props.attributes;
 
 		return (
@@ -151,6 +158,22 @@ registerBlockType( 'tyme/post-swiper', {
 								props.setAttributes( { swiperLinkFeaturedImage: linkFeaturedImage } );
 							} }
 							linkImage={ swiperLinkFeaturedImage }
+						/>
+						<SwiperDateToggle
+							onChange={ ( displayDate ) => {
+								props.setAttributes( { swiperShowDate: displayDate } );
+							} }
+							value={ swiperShowDate }
+						/>
+						<SwiperMoreToggle
+							onChange={ ( moreVal ) => {
+								props.setAttributes( { swiperReadMore: moreVal } );
+							} }
+							value={ swiperReadMore }
+							moreText={ swiperReadMoreText }
+							onTextChange={ ( moreText ) => {
+								props.setAttributes( { swiperReadMoreText: moreText } );
+							} }
 						/>
 					</PanelBody>
 
@@ -201,16 +224,6 @@ registerBlockType( 'tyme/post-swiper', {
 							value={ swiperShowPagi }
 							effectVal={ swiperPagiEffect }
 						/>
-						<SwiperMoreToggle
-							onChange={ ( moreVal ) => {
-								props.setAttributes( { swiperReadMore: moreVal } );
-							} }
-							value={ swiperReadMore }
-							moreText={ swiperReadMoreText }
-							onTextChange={ ( moreText ) => {
-								props.setAttributes( { swiperReadMoreText: moreText } );
-							} }
-						/>
 					</PanelBody>
 				</InspectorControls>
 				<div
@@ -240,6 +253,11 @@ registerBlockType( 'tyme/post-swiper', {
 									) : ''
 								}
 								<h2><a href={ post.url }>{ post.title }</a></h2>
+								{
+									swiperShowDate ? (
+										<div className="post-date">{ dateI18n( 'F j, Y', post.date ) }</div>
+									) : ''
+								}
 								<RawHTML>{ post.excerpt }</RawHTML>
 								{ swiperReadMore ? (
 									<div className="read-more">
@@ -286,6 +304,7 @@ registerBlockType( 'tyme/post-swiper', {
 			swiperPagiEffect,
 			swiperFeaturedImage,
 			swiperLinkFeaturedImage,
+			swiperShowDate,
 		} = props.attributes;
 
 		return (
@@ -316,6 +335,12 @@ registerBlockType( 'tyme/post-swiper', {
 									) : ''
 								}
 								<h2><a href={ post.url }>{ post.title }</a></h2>
+								{
+									swiperShowDate ? (
+										<div className="post-date">{ dateI18n( 'F j, Y', post.date ) }</div>
+									) : ''
+								}
+
 								<RawHTML>{ post.excerpt }</RawHTML>
 								{ swiperReadMore ? (
 									<div className="read-more">
