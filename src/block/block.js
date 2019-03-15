@@ -94,6 +94,10 @@ registerBlockType( 'tyme/post-swiper', {
 			type: 'boolean',
 			default: true,
 		},
+		swiperLinkFeaturedImage: {
+			type: 'boolean',
+			default: false,
+		},
 	},
 
 	/**
@@ -116,6 +120,7 @@ registerBlockType( 'tyme/post-swiper', {
 			swiperShowPagi,
 			swiperPagiEffect,
 			swiperFeaturedImage,
+			swiperLinkFeaturedImage,
 		} = props.attributes;
 
 		return (
@@ -142,6 +147,10 @@ registerBlockType( 'tyme/post-swiper', {
 								props.setAttributes( { swiperFeaturedImage: displayFeatured } );
 							} }
 							value={ swiperFeaturedImage }
+							onLinkImageChange={ ( linkFeaturedImage ) => {
+								props.setAttributes( { swiperLinkFeaturedImage: linkFeaturedImage } );
+							} }
+							linkImage={ swiperLinkFeaturedImage }
 						/>
 					</PanelBody>
 
@@ -221,7 +230,12 @@ registerBlockType( 'tyme/post-swiper', {
 						{ posts.map( post => (
 							<div className="swiper-slide" key={ post.id }>
 								{
-									swiperFeaturedImage && post.image.length > 1 ? (
+									swiperFeaturedImage && post.image.length > 1 && swiperLinkFeaturedImage ? (
+										<a href={ post.url }><img src={ post.image } alt={ post.title } /></a>
+									) : ''
+								}
+								{
+									swiperFeaturedImage && post.image.length > 1 && ! swiperLinkFeaturedImage ? (
 										<img src={ post.image } alt={ post.title } />
 									) : ''
 								}
@@ -271,50 +285,58 @@ registerBlockType( 'tyme/post-swiper', {
 			swiperShowPagi,
 			swiperPagiEffect,
 			swiperFeaturedImage,
+			swiperLinkFeaturedImage,
 		} = props.attributes;
 
 		return (
-			<div
-				className="swiper-container"
-				data-swiper-effect={ swiperEffect }
-				data-swiper-perview={ swiperPerView }
-				data-swiper-loop={ swiperLoop }
-				data-swiper-autoplay={ swiperAutoPlay }
-				data-swiper-centered={ swiperCentered }
-				data-swiper-navigation={ swiperShowNav }
-				data-swiper-pagination={ swiperShowPagi }
-				data-swiper-pagination-effect={ swiperPagiEffect }
-				data-swiper-more={ swiperReadMore }
-			>
-				<div className="swiper-wrapper">
-					{ posts.map( post => (
-						<div className="swiper-slide" key={ post.id }>
-							{
-								swiperFeaturedImage && post.image.length > 1 ? (
-									<img src={ post.image } alt={ post.title } />
-								) : ''
-							}
-							<h2><a href={ post.url }>{ post.title }</a></h2>
-							<RawHTML>{ post.excerpt }</RawHTML>
-							{ swiperReadMore ? (
-								<div className="read-more">
-									<a href={ post.url }>{ swiperReadMoreText }</a>
-								</div>
-							) : '' }
-						</div>
-					) ) }
+			<div className="tyme-swiper">
+				<div
+					className="swiper-container"
+					data-swiper-effect={ swiperEffect }
+					data-swiper-perview={ swiperPerView }
+					data-swiper-loop={ swiperLoop }
+					data-swiper-autoplay={ swiperAutoPlay }
+					data-swiper-centered={ swiperCentered }
+					data-swiper-navigation={ swiperShowNav }
+					data-swiper-pagination={ swiperShowPagi }
+					data-swiper-pagination-effect={ swiperPagiEffect }
+					data-swiper-more={ swiperReadMore }
+				>
+					<div className="swiper-wrapper">
+						{ posts.map( post => (
+							<div className="swiper-slide" key={ post.id }>
+								{
+									swiperFeaturedImage && post.image.length > 1 && swiperLinkFeaturedImage ? (
+										<a href={ post.url }><img src={ post.image } alt={ post.title } /></a>
+									) : ''
+								}
+								{
+									swiperFeaturedImage && post.image.length > 1 && ! swiperLinkFeaturedImage ? (
+										<img src={ post.image } alt={ post.title } />
+									) : ''
+								}
+								<h2><a href={ post.url }>{ post.title }</a></h2>
+								<RawHTML>{ post.excerpt }</RawHTML>
+								{ swiperReadMore ? (
+									<div className="read-more">
+										<a href={ post.url }>{ swiperReadMoreText }</a>
+									</div>
+								) : '' }
+							</div>
+						) ) }
+					</div>
+
+					{ swiperShowNav ? (
+						<Fragment>
+							<div className="swiper-button-next"></div>
+							<div className="swiper-button-prev"></div>
+						</Fragment>
+					) : '' }
+
+					{ swiperShowPagi ? (
+						<div className="swiper-pagination"></div>
+					) : '' }
 				</div>
-
-				{ swiperShowNav ? (
-					<Fragment>
-						<div className="swiper-button-next"></div>
-						<div className="swiper-button-prev"></div>
-					</Fragment>
-				) : '' }
-
-				{ swiperShowPagi ? (
-					<div className="swiper-pagination"></div>
-				) : '' }
 			</div>
 		);
 	},

@@ -225,8 +225,12 @@ class SwiperPostSelector extends Component {
 				excerpt: decodeEntities( response.excerpt.rendered ),
 				url: response.link,
 				date: response.human_date,
-				image: response._embedded[ 'wp:featuredmedia' ][ '0' ].source_url,
+				image: '',
 			};
+
+			if ( response._embedded[ 'wp:featuredmedia' ] && Array.isArray( response._embedded[ 'wp:featuredmedia' ] ) ) {
+				fullpost.image = response._embedded[ 'wp:featuredmedia' ][ '0' ].source_url;
+			}
 
 			this.props.onPostSelect( fullpost );
 		} );
