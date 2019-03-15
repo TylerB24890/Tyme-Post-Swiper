@@ -1,7 +1,10 @@
 ( function( $ ) {
 	'use strict';
 
-	$( document ).on( 'change', '.block-editor', function() {
+	const tyme = window.tyme || {};
+	const action = ( tyme.curPage && tyme.curPage === 'post.php' ? 'change' : 'ready' );
+
+	$( document ).on( action, function() {
 		const swiperContainer = $( '.swiper-container' );
 
 		const swiperOptions = {
@@ -16,8 +19,8 @@
 			} : false ),
 			pagination: ( swiperContainer.data( 'swiper-pagination' ) ? {
 				el: '.swiper-pagination',
-				dynamicBullets: swiperContainer.data( 'swiper-pagination-effect' ) ? true : false,
-			} : false ),
+				dynamicBullets: swiperContainer.data( 'swiper-pagination-effect' ),
+			} : '' ),
 			fadeEffect: {
 				crossFade: true,
 			},

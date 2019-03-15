@@ -23,8 +23,8 @@ class PostSwiper {
 	 * Object constructor
 	 */
 	public function __construct() {
-		add_action( 'enqueue_block_assets', array( $this, 'enqueue_global_assets' ) );
-		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_editor_assets' ) );
+		\add_action( 'enqueue_block_assets', array( $this, 'enqueue_global_assets' ) );
+		\add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_editor_assets' ) );
 	}
 
 	/**
@@ -47,25 +47,27 @@ class PostSwiper {
    * @return void
    */
 	public function enqueue_global_assets() {
-		wp_enqueue_script(
-			'tyme_post_swiper-swiper-script',
-			TYME_URL . '/dist/vendor/swiper.min.js',
+		\wp_enqueue_script(
+			'tyme_post_swiper_swiper_script',
+			TYME_URL . 'dist/vendor/swiper.min.js',
 			array()
 		);
 
-		wp_enqueue_script(
-			'tyme_post_swiper-fe-script',
-			TYME_URL . '/dist/tyme-swiper-fe.js',
-			array( 'tyme_post_swiper-swiper-script', 'jquery' ),
+		\wp_enqueue_script(
+			'tyme_post_swiper_init',
+			TYME_URL . 'dist/tyme-swiper.js',
+			array( 'tyme_post_swiper_swiper_script', 'jquery' ),
 			true
 		);
 
 		// Styles.
-		wp_enqueue_style(
+		\wp_enqueue_style(
 			'tyme_post_swiper-css',
-			TYME_URL . '/dist/blocks.style.build.css',
+			TYME_URL . 'dist/blocks.style.build.css',
 			array( 'wp-editor' )
 		);
+
+		$this->localize_data();
 	}
 
   /**
@@ -75,25 +77,31 @@ class PostSwiper {
    */
 	public function enqueue_editor_assets() {
 		// Scripts.
-		wp_enqueue_script(
+		\wp_enqueue_script(
 			'tyme_post_swiper-js',
-			TYME_URL . '/dist/blocks.build.js',
+			TYME_URL . 'dist/blocks.build.js',
 			array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor', 'wp-html-entities', 'wp-keycodes', 'wp-components', 'wp-compose', 'wp-url' ),
 			true
 		);
 
-		wp_enqueue_script(
-			'tyme_post_swiper-be-js',
-			TYME_URL . '/dist/tyme-swiper-be.js',
-			array( 'jquery' ),
-			true
-		);
-
 		// Styles.
-		wp_enqueue_style(
+		\wp_enqueue_style(
 			'tyme_post_swiper-editor-css',
-			TYME_URL . '/dist/blocks.editor.build.css',
+			TYME_URL . 'dist/blocks.editor.build.css',
 			array( 'wp-edit-blocks' )
 		);
+	}
+
+	/**
+	 * Localize data for JS script
+	 *
+	 * @return void
+	 */
+	private function localize_data() {
+		global $pagenow;
+		$localized = array(
+			'curPage' => ( ! empty( $pagenow ) ? $pagenow : '' )
+		);
+		\wp_localize_script( 'tyme_post_swiper_init', 'tyme', $localized );
 	}
 }
