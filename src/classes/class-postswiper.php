@@ -50,13 +50,16 @@ class PostSwiper {
 		\wp_enqueue_script(
 			'tyme_post_swiper_swiper_script',
 			TYME_URL . 'dist/vendor/swiper.min.js',
-			array()
+			array(),
+			'4.5.0',
+			true
 		);
 
 		\wp_enqueue_script(
 			'tyme_post_swiper_init',
 			TYME_URL . 'dist/tyme-swiper.js',
 			array( 'tyme_post_swiper_swiper_script' ),
+			'1.0.0',
 			true
 		);
 
@@ -81,6 +84,7 @@ class PostSwiper {
 			'tyme_post_swiper-js',
 			TYME_URL . 'dist/blocks.build.js',
 			array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor', 'wp-html-entities', 'wp-keycodes', 'wp-components', 'wp-compose', 'wp-url', 'wp-date' ),
+			'1.0.0',
 			true
 		);
 
