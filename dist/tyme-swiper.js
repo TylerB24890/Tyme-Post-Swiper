@@ -5,11 +5,15 @@
  * @package	tyme-post-swiper
  */
 
+// Initialize Swiper on CHANGE if in editor, otherwise on DOMContentLoaded if on frontend.
 const action = ( tyme.curPage && tyme.curPage === 'post.php' ? 'change' : 'DOMContentLoaded' );
 
+// Listen for the specified action above
 document.addEventListener( action, function() {
+	// Get the swiper element
 	const swiperContainer = document.querySelector( '.swiper-container' );
 
+	// Set the swiper options
 	const swiperOptions = {
 		autoplay: swiperContainer.getAttribute( 'data-swiper-autoplay' ),
 		loop: swiperContainer.getAttribute( 'data-swiper-loop' ),
@@ -30,5 +34,6 @@ document.addEventListener( action, function() {
 		grabCursor: true,
 	};
 
+	// Initialize swiper
 	new Swiper( swiperContainer, swiperOptions );
 } );
