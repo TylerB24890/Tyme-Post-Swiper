@@ -11,6 +11,11 @@
 		height: auto;
 	}
 
+	.swiper-button-prev,
+	.swiper-button-next {
+		background-image: none !important;
+	}
+
 	// Centered
 	&[data-swiper-centered="true"] {
 		text-align: center;

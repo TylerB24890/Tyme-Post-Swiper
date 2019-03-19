@@ -20,6 +20,8 @@ import {
 	SwiperCenterToggle,
 	SwiperMoreToggle,
 	SwiperNavigationToggle,
+	NextArrow,
+	PrevArrow,
 	SwiperPaginationToggle,
 	SwiperFeaturedImage,
 	SwiperDateToggle,
@@ -30,7 +32,7 @@ const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
 const { Fragment, RawHTML } = wp.element;
 const { InspectorControls } = wp.editor;
-const { PanelBody } = wp.components;
+const { PanelBody, ColorPicker } = wp.components;
 const { dateI18n } = wp.date;
 
 /**
@@ -84,6 +86,10 @@ registerBlockType( 'tyme/post-swiper', {
 			type: 'boolean',
 			default: false,
 		},
+		swiperNavColor: {
+			type: 'string',
+			default: '#017AFF',
+		},
 		swiperShowPagi: {
 			type: 'boolean',
 			default: false,
@@ -123,6 +129,7 @@ registerBlockType( 'tyme/post-swiper', {
 			swiperReadMore,
 			swiperReadMoreText,
 			swiperShowNav,
+			swiperNavColor,
 			swiperShowPagi,
 			swiperPagiEffect,
 			swiperFeaturedImage,
@@ -214,6 +221,17 @@ registerBlockType( 'tyme/post-swiper', {
 							} }
 							value={ swiperShowNav }
 						/>
+						{
+							swiperShowNav ? (
+								<ColorPicker
+									color={ swiperNavColor }
+									onChangeComplete={ ( { hex } ) => {
+										props.setAttributes( { swiperNavColor: hex } );
+									} }
+									disableAlpha
+								/>
+							) : null
+						}
 						<SwiperPaginationToggle
 							onChange={ ( pagiVal ) => {
 								props.setAttributes( { swiperShowPagi: pagiVal } );
@@ -245,39 +263,43 @@ registerBlockType( 'tyme/post-swiper', {
 								{
 									swiperFeaturedImage && post.image.length > 1 && swiperLinkFeaturedImage ? (
 										<a href={ post.url }><img src={ post.image } alt={ post.title } /></a>
-									) : ''
+									) : null
 								}
 								{
 									swiperFeaturedImage && post.image.length > 1 && ! swiperLinkFeaturedImage ? (
 										<img src={ post.image } alt={ post.title } />
-									) : ''
+									) : null
 								}
 								<h2><a href={ post.url }>{ post.title }</a></h2>
 								{
 									swiperShowDate ? (
 										<div className="post-date">{ dateI18n( 'F j, Y', post.date ) }</div>
-									) : ''
+									) : null
 								}
 								<RawHTML>{ post.excerpt }</RawHTML>
 								{ swiperReadMore ? (
 									<div className="read-more">
 										<a href={ post.url }>{ swiperReadMoreText }</a>
 									</div>
-								) : '' }
+								) : null }
 							</div>
 						) ) }
 					</div>
 
 					{ swiperShowNav ? (
 						<Fragment>
-							<div className="swiper-button-next"></div>
-							<div className="swiper-button-prev"></div>
+							<div className="swiper-button-next">
+								<NextArrow color={ swiperNavColor } />
+							</div>
+							<div className="swiper-button-prev">
+								<PrevArrow color={ swiperNavColor } />
+							</div>
 						</Fragment>
-					) : '' }
+					) : null }
 
 					{ swiperShowPagi ? (
 						<div className="swiper-pagination"></div>
-					) : '' }
+					) : null }
 				</div>
 			</Fragment>
 		);
@@ -300,6 +322,7 @@ registerBlockType( 'tyme/post-swiper', {
 			swiperReadMore,
 			swiperReadMoreText,
 			swiperShowNav,
+			swiperNavColor,
 			swiperShowPagi,
 			swiperPagiEffect,
 			swiperFeaturedImage,
@@ -353,8 +376,12 @@ registerBlockType( 'tyme/post-swiper', {
 
 					{ swiperShowNav ? (
 						<Fragment>
-							<div className="swiper-button-next"></div>
-							<div className="swiper-button-prev"></div>
+							<div className="swiper-button-next">
+								<NextArrow color={ swiperNavColor } />
+							</div>
+							<div className="swiper-button-prev">
+								<PrevArrow color={ swiperNavColor } />
+							</div>
 						</Fragment>
 					) : '' }
 

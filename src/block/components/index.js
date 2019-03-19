@@ -8,3 +8,4 @@ export { SwiperNavigationToggle } from './SwiperNavigationToggle';
 export { SwiperPaginationToggle } from './SwiperPaginationToggle';
 export { SwiperFeaturedImage } from './SwiperFeaturedImage';
 export { SwiperDateToggle } from './SwiperDateToggle';
+export { NextArrow, PrevArrow } from './SwiperNavArrows';
