@@ -32,11 +32,17 @@ Please feel free to fork and edit this block! I welcome and encourage contributi
 
 This project is licensed under the GNU General Public License v.2.0
 
+---
+
 ### Auto Suggest Post Searching
-![](http://tymeinteractive.com/plugins/tyme-post-swiper/img/Post-Searching.gif)
+![Autosuggest Post Searching](http://tymeinteractive.com/plugins/tyme-post-swiper/img/Post-Searching.gif)
+
+---
 
 ### Changing Slide Order/Post Position
-![](http://tymeinteractive.com/plugins/tyme-post-swiper/img/PostSorting.gif)
+![Change Slide Positions](http://tymeinteractive.com/plugins/tyme-post-swiper/img/Post-Sorting.gif)
+
+---
 
 ### Adjusting Slider Display
-![](http://tymeinteractive.com/plugins/tyme-post-swiper/img/Slider-Settings.gif)
+![Adjust Slider Display](http://tymeinteractive.com/plugins/tyme-post-swiper/img/Slider-Settings.gif)
