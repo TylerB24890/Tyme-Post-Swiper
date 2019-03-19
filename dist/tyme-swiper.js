@@ -5,12 +5,11 @@
  * @package	tyme-post-swiper
  */
 
-// Initialize Swiper on CHANGE if in editor, otherwise on DOMContentLoaded if on frontend.
-const action = ( tyme.curPage && tyme.curPage === 'post.php' ? 'change' : 'DOMContentLoaded' );
+// Initialize Swiper on click if in editor, otherwise on DOMContentLoaded if on frontend.
+const action = ( tyme.curPage && tyme.curPage === 'post.php' ? 'click' : 'DOMContentLoaded' );
 
-// Listen for the specified action above
-document.addEventListener( action, function() {
-	// Get the swiper element
+const initTymeSwiper = () => {
+// Get the swiper element
 	const swiperContainer = document.querySelector( '.swiper-container' );
 
 	// Swiper Transition Effect
@@ -42,7 +41,7 @@ document.addEventListener( action, function() {
 
 	// Configure the Swiper pagination
 	if ( swiperContainer.getAttribute( 'data-swiper-pagination' ) ) {
-		// The pagination type
+	// The pagination type
 		const swiperPagiType = swiperContainer.getAttribute( 'data-swiper-pagination-type' );
 
 		swiperOptions = {
@@ -64,4 +63,7 @@ document.addEventListener( action, function() {
 
 	// Initialize swiper
 	new Swiper( swiperContainer, swiperOptions );
-} );
+};
+
+// Listen for the specified action above
+document.addEventListener( action, initTymeSwiper );
