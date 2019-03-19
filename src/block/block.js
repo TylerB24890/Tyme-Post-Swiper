@@ -94,9 +94,9 @@ registerBlockType( 'tyme/post-swiper', {
 			type: 'boolean',
 			default: false,
 		},
-		swiperPagiEffect: {
-			type: 'boolean',
-			default: false,
+		swiperPagiType: {
+			type: 'string',
+			default: 'default',
 		},
 		swiperFeaturedImage: {
 			type: 'boolean',
@@ -131,7 +131,7 @@ registerBlockType( 'tyme/post-swiper', {
 			swiperShowNav,
 			swiperNavColor,
 			swiperShowPagi,
-			swiperPagiEffect,
+			swiperPagiType,
 			swiperFeaturedImage,
 			swiperLinkFeaturedImage,
 			swiperShowDate,
@@ -236,11 +236,11 @@ registerBlockType( 'tyme/post-swiper', {
 							onChange={ ( pagiVal ) => {
 								props.setAttributes( { swiperShowPagi: pagiVal } );
 							} }
-							effectChange={ ( pagiEffect ) => {
-								props.setAttributes( { swiperPagiEffect: pagiEffect } );
+							changeType={ ( pagiType ) => {
+								props.setAttributes( { swiperPagiType: pagiType } );
 							} }
 							value={ swiperShowPagi }
-							effectVal={ swiperPagiEffect }
+							type={ swiperPagiType }
 						/>
 					</PanelBody>
 				</InspectorControls>
@@ -253,7 +253,7 @@ registerBlockType( 'tyme/post-swiper', {
 					data-swiper-centered={ swiperCentered }
 					data-swiper-navigation={ swiperShowNav }
 					data-swiper-pagination={ swiperShowPagi }
-					data-swiper-pagination-effect={ swiperPagiEffect }
+					data-swiper-pagination-type={ swiperPagiType }
 					data-block-selected={ props.isSelected }
 					data-swiper-more={ swiperReadMore }
 				>
@@ -324,7 +324,7 @@ registerBlockType( 'tyme/post-swiper', {
 			swiperShowNav,
 			swiperNavColor,
 			swiperShowPagi,
-			swiperPagiEffect,
+			swiperPagiType,
 			swiperFeaturedImage,
 			swiperLinkFeaturedImage,
 			swiperShowDate,
@@ -341,7 +341,7 @@ registerBlockType( 'tyme/post-swiper', {
 					data-swiper-centered={ swiperCentered }
 					data-swiper-navigation={ swiperShowNav }
 					data-swiper-pagination={ swiperShowPagi }
-					data-swiper-pagination-effect={ swiperPagiEffect }
+					data-swiper-pagination-type={ swiperPagiType }
 					data-swiper-more={ swiperReadMore }
 				>
 					<div className="swiper-wrapper">

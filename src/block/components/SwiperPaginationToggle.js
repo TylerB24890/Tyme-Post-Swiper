@@ -11,7 +11,7 @@
  */
 
 const { Fragment, Component } = wp.element;
-const { ToggleControl } = wp.components;
+const { ToggleControl, SelectControl } = wp.components;
 const { __ } = wp.i18n;
 
 class SwiperPaginationToggle extends Component {
@@ -21,6 +21,7 @@ class SwiperPaginationToggle extends Component {
 		this.state = {
 			showPagi: this.props.value,
 			pagiEffect: this.props.effectVal,
+			pagiType: this.props.type,
 		};
 	}
 
@@ -31,10 +32,10 @@ class SwiperPaginationToggle extends Component {
 		} );
 	}
 
-	onChangeEffect( newEffect ) {
-		this.props.effectChange( newEffect );
+	onChangeType( newType ) {
+		this.props.changeType( newType );
 		this.setState( {
-			pagiEffect: newEffect,
+			pagiType: newType,
 		} );
 	}
 
@@ -49,16 +50,23 @@ class SwiperPaginationToggle extends Component {
 						this.onChange( newPagi );
 					} }
 				/>
-				{ this.state.showPagi ? (
-					<ToggleControl
-						label={ __( 'Animate Pagination' ) }
-						help={ this.state.pagiEffect ? __( 'Pagination will animate.' ) : __( 'Pagination will not animate.' ) }
-						checked={ this.state.pagiEffect }
-						onChange={ ( newEffect ) => {
-							this.onChangeEffect( newEffect );
-						} }
-					/>
-				) : '' }
+				{
+					this.state.showPagi ? (
+						<SelectControl
+							label={ __( 'Pagination Type' ) }
+							value={ this.state.pagiType }
+							options={ [
+								{ label: __( 'Bullets' ), value: 'default' },
+								{ label: __( 'Dynamic Bullets' ), value: 'dynamic' },
+								{ label: __( 'Progress Bar' ), value: 'progressbar' },
+								{ label: __( 'Fraction Numbers' ), value: 'fraction' },
+							] }
+							onChange={ ( newType ) => {
+								this.onChangeType( newType );
+							} }
+						/>
+					) : null
+				}
 			</Fragment>
 		);
 	}
